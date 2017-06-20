@@ -1,7 +1,24 @@
 {
+  "entrypoint": "index.html",
+  "shell": "src/demo-app.html",
+  "fragments": [
+    "src/da-selector.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "data/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.js"
+  ],
   "lint": {
-    "rules": [
-      "polymer-2"
-    ]
-  }
+    "rules": ["polymer-2-hybrid"]
+  },
+  "builds": [
+    { "preset": "es5-bundled" },
+    { "preset": "es6-unbundled" }
+  ]
 }
