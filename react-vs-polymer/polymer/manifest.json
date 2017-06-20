@@ -1,0 +1,7 @@
+{
+  "name": "demo-da-selector",
+  "short_name": "demo-da-selector",
+  "description": "A custom selector with searcher",
+  "start_url": "/",
+  "display": "standalone"
+}
