@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="da-selector">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <template is="dom-repeat" items="{{optionList}}">
+      <div>[[index]]</div>
+      <div>[[item.id]]</div>
+      <div>[[item.display]]</div>
+    </template>
+  </template>
+
+  <script>
+    class DaSelector extends Polymer.Element {
+      static get is() { return 'da-selector' }
+      static get properties() {
+        return {
+          optionList: Array,
+        }
+      }
+
+      constructor() {
+        super()
+      }
+    }
+
+    window.customElements.define(DaSelector.is, DaSelector)
+  </script>
+</dom-module>
