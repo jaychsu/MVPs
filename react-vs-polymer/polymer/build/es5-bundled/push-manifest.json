@@ -1,0 +1,9 @@
+{
+  "src/demo-app.html": {
+    "src/da-selector.html": {
+      "type": "document",
+      "weight": 1
+    }
+  },
+  "src/da-selector.html": {}
+}
