@@ -9,7 +9,12 @@
     <div class$="[[classSet.panel]]">
       <ul class$="[[classSet.list]]">
         <template is="dom-repeat" items="{{optionDataList}}">
-          <li class$="[[classSet.item]]">[[item.display]]</li>
+          <li
+            class$="{{getOptionClasses(classSet.item, selectedOptionId, item.id)}}"
+            on-click="onOptionClick"
+          >
+            {{item.display}}
+          </li>
         </template>
       </ul>
     </div>
@@ -20,6 +25,7 @@
       static get is() { return 'da-selector' }
       static get properties() {
         return {
+          selectedOptionId: String,
           optionDataList: Array,
           classSet: {
             type: Object,
@@ -43,6 +49,16 @@
 
       constructor() {
         super()
+      }
+
+      onOptionClick(event) {
+        this.selectedOptionId = event.model.item.id
+      }
+
+      getOptionClasses(existingClasses, selectedOptionId, optionId) {
+        let classList = existingClasses || ''
+        if (selectedOptionId === optionId) classList += ' ' + this.classSet.active
+        return classList
       }
     }
 
