@@ -6,17 +6,35 @@
     <link rel="stylesheet" type="text/css" href="../../shared/reset.css">
     <link rel="stylesheet" type="text/css" href="../../shared/da-selector.css">
 
-    <div class$="[[classSet.panel]]">
-      <ul class$="[[classSet.list]]">
-        <template is="dom-repeat" items="{{optionDataList}}">
-          <li
-            class$="{{getOptionClasses(classSet.item, selectedOptionId, item.id)}}"
-            on-click="onOptionClick"
-          >
-            {{item.display}}
-          </li>
-        </template>
-      </ul>
+    <div class$="[[classSet.main]]">
+      <div class$="[[classSet.placeholder]]"></div>
+
+      <template is="dom-if" if="{{needSearcher}}">
+        <div class$="[[classSet.searchWrap]]">
+          <input class$="[[classSet.search]]" type="text" />
+          <span class$="[[classSet.searchIcon]]"></span>
+        </div>
+      </template>
+
+      <template is="dom-if" if="{{isTriangleShown}}">
+        <span class$="[[classSet.triangle]]"></span>
+      </template>
+
+      <div class$="[[classSet.panel]]">
+        <ul class$="[[classSet.list]]">
+          <template is="dom-repeat" items="{{optionDataList}}">
+            <li
+              class$="{{getOptionClasses(classSet.item, selectedOptionId, item.id)}}"
+              on-click="onOptionClick"
+            >
+              {{item.display}}
+            </li>
+          </template>
+        </ul>
+      </div>
+
+      <label></label>
+      <input type="" />
     </div>
   </template>
 
@@ -27,6 +45,14 @@
         return {
           selectedOptionId: String,
           optionDataList: Array,
+          needSearcher: {
+            type: Boolean,
+            value: false,
+          },
+          isTriangleShown: {
+            type: Boolean,
+            value: true,
+          },
           classSet: {
             type: Object,
             value() {
