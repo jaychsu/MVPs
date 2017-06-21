@@ -9,32 +9,37 @@
     <div class$="[[classSet.main]]">
       <div class$="[[classSet.placeholder]]"></div>
 
-      <template is="dom-if" if="{{needSearcher}}">
+      <template is="dom-if" if="[[needSearcher]]">
         <div class$="[[classSet.searchWrap]]">
           <input class$="[[classSet.search]]" type="text" />
           <span class$="[[classSet.searchIcon]]"></span>
         </div>
       </template>
 
-      <template is="dom-if" if="{{isTriangleShown}}">
+      <template is="dom-if" if="[[isTriangleShown]]">
         <span class$="[[classSet.triangle]]"></span>
       </template>
 
-      <div class$="[[classSet.panel]]">
+      <div class$="[[classSet.panel]]" hidden$="[[isPanelHidden]]">
         <ul class$="[[classSet.list]]">
           <template is="dom-repeat" items="{{optionDataList}}">
             <li
-              class$="{{getOptionClasses(classSet.item, selectedOptionId, item.id)}}"
+              class$="[[getOptionClasses(classSet.item, selectedOptionId, item.id)]]"
               on-click="onOptionClick"
             >
-              {{item.display}}
+              [[item.display]]
             </li>
           </template>
         </ul>
       </div>
 
-      <label></label>
-      <input type="" />
+      <label
+        for$="[[id]]"
+        on-click="onPlaceholderClick"
+      >
+        [[placeholder]]
+      </label>
+      <input type="hidden" id$="[[id]]" />
     </div>
   </template>
 
@@ -43,13 +48,22 @@
       static get is() { return 'da-selector' }
       static get properties() {
         return {
-          selectedOptionId: String,
+          // Interface
+          id: String,
+          placeholder: String,
           optionDataList: Array,
           needSearcher: {
             type: Boolean,
             value: false,
           },
           isTriangleShown: {
+            type: Boolean,
+            value: true,
+          },
+
+          // Variables
+          selectedOptionId: String,
+          isPanelHidden: {
             type: Boolean,
             value: true,
           },
@@ -79,6 +93,11 @@
 
       onOptionClick(event) {
         this.selectedOptionId = event.model.item.id
+        this.isPanelHidden = true
+      }
+
+      onPlaceholderClick(event) {
+        this.isPanelHidden = !this.isPanelHidden
       }
 
       getOptionClasses(existingClasses, selectedOptionId, optionId) {

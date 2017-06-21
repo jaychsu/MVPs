@@ -10,7 +10,11 @@
     </style>
 
     <button on-click="handleBtnClick">Change data source</button>
-    <da-selector option-data-list="{{optionDataList}}"></da-selector>
+    <da-selector
+      id="demo-selector"
+      option-data-list="{{optionDataList}}"
+      placeholder="I am placeholder"
+    />
   </template>
 
   <script>
@@ -29,7 +33,7 @@
       }
 
       handleBtnClick() {
-        this.optionDataList = this.getRandomData(10)
+        this.optionDataList = this.getRandomData(20)
       }
 
       getRandomData(length) {
