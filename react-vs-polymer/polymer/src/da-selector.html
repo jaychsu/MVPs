@@ -23,18 +23,21 @@
           optionDataList: Array,
           classSet: {
             type: Object,
-            value: {
-              main: 'da-selector',
-              panel: 'da-selector-panel',
-              list: 'da-selector-option-list',
-              item: 'da-selector-option-item',
-              searchWrap: 'da-selector-search-wrap',
-              searchIcon: 'da-selector-search-icon',
-              search: 'da-selector-search',
-              placeholder: 'da-selector-placeholder',
-              triangle: 'da-selector-triangle',
-            }
-          }
+            value() {
+              return {
+                main: 'da-selector',
+                panel: 'da-selector-panel',
+                list: 'da-selector-option-list',
+                item: 'da-selector-option-item',
+                searchWrap: 'da-selector-search-wrap',
+                searchIcon: 'da-selector-search-icon',
+                search: 'da-selector-search',
+                placeholder: 'da-selector-placeholder',
+                triangle: 'da-selector-triangle',
+                active: 'active',
+              }
+            },
+          },
         }
       }
 
