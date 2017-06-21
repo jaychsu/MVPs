@@ -1,3 +1,4 @@
+/* START: da-selector */
 .da-selector.is-expanded {
   border: 1px solid #e55e38;
   box-shadow: none;
@@ -132,3 +133,51 @@
   width: 100%;
   height: auto;
 }
+/* END: da-selector */
+
+/* START: input-effect */
+.da-selector {
+  position: relative;
+}
+
+.da-selector > label {
+  position: absolute;
+  left: 20px;
+  top: 11px;
+}
+
+.da-selector > label {
+  max-width: 80%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.428571429;
+  letter-spacing: .5px;
+  color: #a0a0a0;
+  cursor: text;
+}
+
+.da-selector.is-expanded > label {
+  left: 5px;
+  top: -13px;
+}
+
+.da-selector.is-expanded > label {
+  max-width: 100%;
+
+  font-size: 10px;
+  color: #999;
+}
+
+.da-selector.is-expanded > label {
+  display: block;
+  top: -14px;
+}
+
+.da-selector.is-expanded > label {
+  left: 0;
+}
+/* END: input-effect */
