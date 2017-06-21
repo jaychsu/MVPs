@@ -9,14 +9,41 @@
       }
     </style>
 
-    <da-selector option-list='[{"id":"0","display":"haha"},{"id":"1","display":"hehe"}]'></da-selector>
+    <button on-click="handleBtnClick">Change data source</button>
+    <da-selector option-data-list="{{optionDataList}}"></da-selector>
   </template>
 
   <script>
     class DemoApp extends Polymer.Element {
       static get is() { return 'demo-app' }
       static get properties() {
-        return {}
+        return {
+          optionDataList: Array,
+        }
+      }
+
+      constructor() {
+        super()
+
+        this.handleBtnClick()
+      }
+
+      handleBtnClick() {
+        this.optionDataList = this.getRandomData(10)
+      }
+
+      getRandomData(length) {
+        let result = []
+          , i
+
+        for (i = 0; i < length; i++) {
+          result.push({
+            id: i,
+            display: `${i} - ${Math.random().toString(16).slice(2)}`,
+          })
+        }
+
+        return result
       }
     }
 

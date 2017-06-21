@@ -3,9 +3,9 @@
 
 <dom-module id="da-selector">
   <template>
-    <link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/jaychsu/MVPs/master/react-vs-polymer/shared/da-selector.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/jaychsu/MVPs/master/react-vs-polymer/shared/da-selector.css"> -->
 
-    <template is="dom-repeat" items="{{optionList}}">
+    <template is="dom-repeat" items="{{optionDataList}}">
       <div>[[index]]</div>
       <div>[[item.id]]</div>
       <div>[[item.display]]</div>
@@ -17,7 +17,7 @@
       static get is() { return 'da-selector' }
       static get properties() {
         return {
-          optionList: Array,
+          optionDataList: Array,
         }
       }
 
