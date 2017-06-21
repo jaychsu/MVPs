@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../../shared/reset.css">
     <link rel="stylesheet" type="text/css" href="../../shared/da-selector.css">
 
-    <div class$="[[classSet.main]]">
+    <div class$="[[getPanelClassList(classSet.main, isPanelExpanded)]]">
       <div class$="[[classSet.placeholder]]"></div>
 
       <template is="dom-if" if="[[needSearcher]]">
@@ -20,11 +20,11 @@
         <span class$="[[classSet.triangle]]"></span>
       </template>
 
-      <div class$="[[classSet.panel]]" hidden$="[[isPanelHidden]]">
+      <div class$="[[classSet.panel]]" hidden$="[[isOptionListHidden]]">
         <ul class$="[[classSet.list]]">
           <template is="dom-repeat" items="{{optionDataList}}">
             <li
-              class$="[[getOptionClasses(classSet.item, selectedOptionId, item.id)]]"
+              class$="[[getOptionClassList(classSet.item, selectedOptionId, item.id)]]"
               on-click="onOptionClick"
             >
               [[item.display]]
@@ -63,7 +63,11 @@
 
           // Variables
           selectedOptionId: String,
-          isPanelHidden: {
+          isPanelExpanded: {
+            type: Boolean,
+            value: false,
+          },
+          isOptionListHidden: {
             type: Boolean,
             value: true,
           },
@@ -80,7 +84,6 @@
                 search: 'da-selector-search',
                 placeholder: 'da-selector-placeholder',
                 triangle: 'da-selector-triangle',
-                active: 'active',
               }
             },
           },
@@ -91,18 +94,24 @@
         super()
       }
 
+      onPlaceholderClick(event) {
+        this.isOptionListHidden = !this.isOptionListHidden
+      }
+
+      getPanelClassList(existingClassList, isPanelExpanded) {
+        let classList = existingClassList || ''
+        if (isPanelExpanded) classList += ' is-expanded'
+        return classList
+      }
+
       onOptionClick(event) {
         this.selectedOptionId = event.model.item.id
-        this.isPanelHidden = true
+        this.isOptionListHidden = true
       }
 
-      onPlaceholderClick(event) {
-        this.isPanelHidden = !this.isPanelHidden
-      }
-
-      getOptionClasses(existingClasses, selectedOptionId, optionId) {
-        let classList = existingClasses || ''
-        if (selectedOptionId === optionId) classList += ' ' + this.classSet.active
+      getOptionClassList(existingClassList, selectedOptionId, optionId) {
+        let classList = existingClassList || ''
+        if (selectedOptionId === optionId) classList += ' active'
         return classList
       }
     }
