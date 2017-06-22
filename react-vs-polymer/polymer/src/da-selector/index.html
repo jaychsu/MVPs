@@ -95,6 +95,7 @@
       }
 
       onPlaceholderClick(event) {
+        this.isPanelExpanded = !this.isPanelExpanded
         this.isOptionListHidden = !this.isOptionListHidden
       }
 
@@ -106,6 +107,7 @@
 
       onOptionClick(event) {
         this.selectedOptionId = event.model.item.id
+        this.isPanelExpanded = false
         this.isOptionListHidden = true
       }
 
