@@ -53,6 +53,7 @@
   <script>
     class DaSelector extends Polymer.Element {
       static get is() { return 'da-selector' }
+      static get idNoResult() { return 'no-result' }
       static get properties() {
         return {
           // Interface
@@ -123,7 +124,7 @@
 
           this.optionDataList = (searchResults.length > 0)
             ? searchResults
-            : [{ id: 'no-result', display: 'no result' }]
+            : [{ id: DaSelector.idNoResult, display: 'no result' }]
         })
       }
 
@@ -143,6 +144,9 @@
 
       onOptionClick(event) {
         const optionData = event.model.item
+
+        if (optionData.id === DaSelector.idNoResult) return false
+
         if (!optionData.display) optionData.display = optionData.id
         this.selectedOptionData = optionData
 
