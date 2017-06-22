@@ -18,7 +18,7 @@ The comparison between React and Polymer
 - in Polymer
     - [repository](./polymer)
     - [main code](./polymer/src/da-selector/index.html)
-    - [demo](./polymer/build/es5-bundled)
+    - [demo](https://pages.git.autodesk.com/suj/react-vs-polymer/react-vs-polymer/polymer/build/es5-bundled)
 - in React
     - [repository](./react)
     - main code
