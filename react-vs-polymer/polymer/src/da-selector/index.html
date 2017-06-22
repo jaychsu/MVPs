@@ -94,6 +94,11 @@
       connectedCallback() {
         super.connectedCallback()
 
+        if ( !this.optionDataList
+          || !this.optionDataList[0]
+          || !this.optionDataList[0].id
+        ) throw new Error('invalid passed-in param: `optionDataList`')
+
         this.selectedOptionData = this.optionDataList[0]
 
         this._originOptionDataList = this.optionDataList
@@ -101,7 +106,7 @@
           const value = event.target.value
           if (typeof value !== 'string') return false
 
-          this.optionDataList = this._originOptionDataList.filter(optionData => {
+          const searchResults = this._originOptionDataList.filter(optionData => {
             if (!optionData) return false
             const searchYield = [
               optionData.id || '',
@@ -110,6 +115,10 @@
             if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
             return false
           })
+
+          this.optionDataList = (searchResults.length > 0)
+            ? searchResults
+            : [{ id: 'no-result', display: 'no result' }]
         })
       }
 
@@ -128,7 +137,10 @@
       }
 
       onOptionClick(event) {
-        this.selectedOptionData = event.model.item
+        const optionData = event.model.item
+        if (!optionData.display) optionData.display = optionData.id
+        this.selectedOptionData = optionData
+
         this.isPanelExpanded = false
         this.isOptionListHidden = true
       }
