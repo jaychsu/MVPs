@@ -53,6 +53,19 @@
   <script>
     class DaSelector extends Polymer.Element {
       static get is() { return 'da-selector' }
+      static get classSet() {
+        return {
+          main: 'da-selector',
+          panel: 'da-selector-panel',
+          list: 'da-selector-option-list',
+          item: 'da-selector-option-item',
+          searchWrap: 'da-selector-search-wrap',
+          searchIcon: 'da-selector-search-icon',
+          search: 'da-selector-search',
+          placeholder: 'da-selector-placeholder',
+          triangle: 'da-selector-triangle',
+        }
+      }
       static get idNoResult() { return 'no-result' }
       static get properties() {
         return {
@@ -74,27 +87,13 @@
             type: Boolean,
             value: true,
           },
-          classSet: {
-            type: Object,
-            value() {
-              return {
-                main: 'da-selector',
-                panel: 'da-selector-panel',
-                list: 'da-selector-option-list',
-                item: 'da-selector-option-item',
-                searchWrap: 'da-selector-search-wrap',
-                searchIcon: 'da-selector-search-icon',
-                search: 'da-selector-search',
-                placeholder: 'da-selector-placeholder',
-                triangle: 'da-selector-triangle',
-              }
-            },
-          },
         }
       }
 
       constructor() {
         super()
+
+        this.classSet = DaSelector.classSet
       }
 
       connectedCallback() {
