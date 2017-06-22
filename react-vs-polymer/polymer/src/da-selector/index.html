@@ -68,7 +68,10 @@
           },
 
           // Variables
-          selectedOptionData: String,
+          selectedOptionData: {
+            type: Object,
+            notify: true,
+          },
           isPanelExpanded: {
             type: Boolean,
             value: false,

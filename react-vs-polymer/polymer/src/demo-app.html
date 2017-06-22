@@ -11,6 +11,9 @@
 
     <button on-click="changeOptionListData">Change option list data source</button>
     <button on-click="togglePanelExpanded">toggle panel expanded</button>
+
+    <p>Your choice is: [[selectedOptionData.display]]</p>
+
     <da-selector
       id="demo-selector"
       option-data-list="{{optionDataList}}"
@@ -18,6 +21,7 @@
 
       is-panel-expanded="{{isPanelExpanded}}"
       is-option-list-hidden="{{isOptionListHidden}}"
+      selected-option-data="{{selectedOptionData}}"
     />
   </template>
 
@@ -35,6 +39,8 @@
             type: Boolean,
             value: true,
           },
+
+          selectedOptionData: Object,
         }
       }
 
@@ -57,7 +63,12 @@
         let result = []
           , i
 
-        for (i = 0; i < length; i++) {
+        result.push({
+          id: 'id-0',
+          display: 'Please select an option',
+        })
+
+        for (i = 1; i < length; i++) {
           result.push({
             id: `id-${i}`,
             display: `${i} - ${Math.random().toString(16).slice(2)}`,
