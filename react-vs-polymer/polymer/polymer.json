@@ -2,7 +2,7 @@
   "entrypoint": "index.html",
   "shell": "src/demo-app.html",
   "fragments": [
-    "src/da-selector.html"
+    "src/da-selector/index.html"
   ],
   "sources": [
     "src/**/*",
