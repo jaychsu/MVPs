@@ -12,13 +12,16 @@ The comparison between React and Polymer
 ## Result
 
 - in jQuery(origin version)
-    - [code](./origin/da-selector.js)
+    - [repository](./origin)
+    - [main code](./origin/da-selector.js)
     - demo
 - in Polymer
-    - code
-    - demo
+    - [repository](./polymer)
+    - [main code](./polymer/src/da-selector/index.html)
+    - [demo](./polymer/build/es5-bundled)
 - in React
-    - code
+    - [repository](./react)
+    - main code
     - demo
 
 ## Summary
