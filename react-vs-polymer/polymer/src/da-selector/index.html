@@ -12,7 +12,10 @@
       }
     </style>
 
-    <div class$="[[getPanelClassList(classSet.main, isPanelExpanded)]]">
+    <div
+      class$="[[getPanelClassList(classSet.main, isPanelExpanded)]]"
+      on-click="onSelectorClick"
+    >
       <div class$="[[classSet.placeholder]]"></div>
 
       <template is="dom-if" if="[[needSearcher]]">
@@ -39,10 +42,7 @@
         </ul>
       </div>
 
-      <label
-        for$="[[id]]"
-        on-click="onPlaceholderClick"
-      >
+      <label for$="[[id]]">
         [[placeholder]]
       </label>
       <input type="hidden" id$="[[id]]" />
@@ -100,7 +100,8 @@
         super()
       }
 
-      onPlaceholderClick(event) {
+      onSelectorClick(event) {
+        if (event.target.className.indexOf('da-selector-option') > -1) return false
         this.isPanelExpanded = !this.isPanelExpanded
         this.isOptionListHidden = !this.isOptionListHidden
       }
