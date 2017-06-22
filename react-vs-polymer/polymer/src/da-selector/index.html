@@ -33,7 +33,7 @@
         <ul class$="[[classSet.list]]">
           <template is="dom-repeat" items="{{optionDataList}}">
             <li
-              class$="[[getOptionClassList(classSet.item, selectedOptionId, item.id)]]"
+              class$="[[getOptionClassList(classSet.item, selectedOptionData.id, item.id)]]"
               on-click="onOptionClick"
             >
               [[item.display]]
@@ -68,7 +68,7 @@
           },
 
           // Variables
-          selectedOptionId: String,
+          selectedOptionData: String,
           isPanelExpanded: {
             type: Boolean,
             value: false,
@@ -113,7 +113,7 @@
       }
 
       onOptionClick(event) {
-        this.selectedOptionId = event.model.item.id
+        this.selectedOptionData = event.model.item
         this.isPanelExpanded = false
         this.isOptionListHidden = true
       }
