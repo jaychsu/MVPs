@@ -1,10 +1,23 @@
 /* START: da-selector */
+.da-selector {
+  position: relative;
+  padding-right: 22px;
+  transition: none;
+  cursor: pointer;
+}
+
 .da-selector.is-expanded {
   border: 1px solid #e55e38;
   box-shadow: none;
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+}
+
+.da-selector.is-expanded {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .da-selector .da-selector-triangle,
@@ -23,13 +36,6 @@
   z-index: 199;
 }
 
-.da-selector {
-  position: relative;
-  padding-right: 22px;
-  transition: none;
-  cursor: pointer;
-}
-
 .da-selector .da-selector-placeholder,
 .da-selector .da-selector-search-wrap,
 .da-selector-option-list .da-selector-option-item {
@@ -41,12 +47,6 @@
 .da-selector .da-selector-placeholder {
   line-height: 20px;
   z-index: 99;
-}
-
-.da-selector.is-expanded {
-  border-bottom: none;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .da-selector .da-selector-panel {
