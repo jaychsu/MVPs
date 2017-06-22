@@ -9,11 +9,14 @@
       }
     </style>
 
-    <button on-click="handleBtnClick">Change option list data source</button>
+    <button on-click="changeOptionListData">Change option list data source</button>
+    <button on-click="togglePanelExpanded">toggle panel expanded</button>
     <da-selector
       id="demo-selector"
       option-data-list="{{optionDataList}}"
       placeholder="I am placeholder"
+      is-panel-expanded="{{isPanelExpanded}}"
+      is-option-list-hidden="{{isOptionListHidden}}"
     />
   </template>
 
@@ -23,17 +26,30 @@
       static get properties() {
         return {
           optionDataList: Array,
+          isPanelExpanded: {
+            type: Boolean,
+            value: false,
+          },
+          isOptionListHidden: {
+            type: Boolean,
+            value: true,
+          },
         }
       }
 
       constructor() {
         super()
 
-        this.handleBtnClick()
+        this.changeOptionListData()
       }
 
-      handleBtnClick() {
+      changeOptionListData() {
         this.optionDataList = this.getRandomData(20)
+      }
+
+      togglePanelExpanded() {
+        this.isPanelExpanded = !this.isPanelExpanded
+        this.isOptionListHidden = !this.isOptionListHidden
       }
 
       getRandomData(length) {
