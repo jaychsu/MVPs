@@ -1,10 +1,48 @@
+/* START: shape */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.da-selector {
+  width: 200px;
+  height: 40px;
+  padding: 10px 14px;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  line-height: 1.5;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: .5px;
+  color: #2b2d30;
+  background-color: #fff;
+  background-image: none;
+  box-shadow: none;
+  appearance: none;
+}
+/* END: shape */
+
 /* START: da-selector */
+.da-selector {
+  position: relative;
+  padding-right: 22px;
+  transition: none;
+  cursor: pointer;
+}
+
 .da-selector.is-expanded {
   border: 1px solid #e55e38;
   box-shadow: none;
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+}
+
+.da-selector.is-expanded {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .da-selector .da-selector-triangle,
@@ -23,13 +61,6 @@
   z-index: 199;
 }
 
-.da-selector {
-  position: relative;
-  padding-right: 22px;
-  transition: none;
-  cursor: pointer;
-}
-
 .da-selector .da-selector-placeholder,
 .da-selector .da-selector-search-wrap,
 .da-selector-option-list .da-selector-option-item {
@@ -41,12 +72,6 @@
 .da-selector .da-selector-placeholder {
   line-height: 20px;
   z-index: 99;
-}
-
-.da-selector.is-expanded {
-  border-bottom: none;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .da-selector .da-selector-panel {

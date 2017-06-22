@@ -1,3 +1,28 @@
+/* START: shape */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.da-selector {
+  width: 200px;
+  height: 40px;
+  padding: 10px 14px;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  line-height: 1.5;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: .5px;
+  color: #2b2d30;
+  background-color: #fff;
+  background-image: none;
+  box-shadow: none;
+  appearance: none;
+}
+/* END: shape */
+
 /* START: da-selector */
 .da-selector {
   position: relative;
