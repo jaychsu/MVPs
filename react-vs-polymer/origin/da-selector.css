@@ -166,6 +166,10 @@
 }
 
 .da-selector > label {
+  display: none;
+}
+
+.da-selector > label {
   position: absolute;
   left: 20px;
   top: 11px;

@@ -16,7 +16,7 @@
       class$="[[getPanelClassList(classSet.main, isPanelExpanded)]]"
       on-click="onSelectorClick"
     >
-      <div class$="[[classSet.placeholder]]"></div>
+      <div class$="[[classSet.placeholder]]">[[selectedOptionData.display]]</div>
 
       <template is="dom-if" if="[[needSearcher]]">
         <div class$="[[classSet.searchWrap]]">
@@ -98,6 +98,11 @@
 
       constructor() {
         super()
+      }
+
+      connectedCallback() {
+        super.connectedCallback()
+        this.selectedOptionData = this.optionDataList[0]
       }
 
       onSelectorClick(event) {
