@@ -9,7 +9,6 @@
       }
     </style>
 
-    <button on-click="changeOptionListData">Change option list data source</button>
     <button on-click="togglePanelExpanded">toggle panel expanded</button>
 
     <p>Your choice is: [[selectedOptionData.display]]</p>
@@ -47,10 +46,6 @@
       constructor() {
         super()
 
-        this.changeOptionListData()
-      }
-
-      changeOptionListData() {
         this.optionDataList = this.getRandomData(20)
       }
 
