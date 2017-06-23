@@ -47,14 +47,13 @@
           placeholder: 'This is yield name',
           inputID: 'value-storage',
           optionDataList: getRandomData(20),
+          onChange: function (newValue, oldValue) {
+            var displayValue = $('#demo-selector').find('[data-value="'+newValue+'"]').attr('title')
+            $('#user-choice').text(displayValue)
+          },
         })
 
         var $doc = $(document)
-
-        $doc.on('change', '#value-storage', function (event) {
-          $('#user-choice').text(event.target.title)
-        })
-        $('#value-storage').trigger('change')
 
         $doc.on('click', '#btn-toggle-panel', function (event) {
           $('.da-selector').trigger('click')

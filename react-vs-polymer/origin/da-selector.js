@@ -20,6 +20,8 @@
     'triangle': 'da-selector-triangle'
   }
 
+  var NULL_FN = function () {}
+
   $.fn.initDaSelector = function (cfg) {
     var $target = this
     var config = $.extend({
@@ -37,7 +39,10 @@
        *   }
        * ]
        */
-      'optionDataList': []
+      'optionDataList': [],
+
+      // callback
+      'onChange': NULL_FN, // params: newValue, oldValue
     }, cfg)
 
     if (!config.inputID) {
@@ -78,6 +83,7 @@
     var $body = $('body')
     var targetSelector = $target.selector
     var isMenuVisible = false
+    var selectorValue = null
 
     $body.on('click', function (e) {
       if ((e.target.className || '').indexOf(classSet.search) > -1) return false
@@ -99,6 +105,12 @@
       var value = $this.data('value')
 
       _setValue($target, config, value)
+    })
+
+    $body.on('change', '#'+config.inputID, function (event) {
+      var value = event.target.value
+      config.onChange(value, selectorValue)
+      selectorValue = value
     })
 
     config.needSearcher && $body.on('keyup', targetSelector+' .'+classSet.search, function (e) {
