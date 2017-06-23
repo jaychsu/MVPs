@@ -6,7 +6,79 @@
 
     <title>[ORIGIN] da-selector</title>
     <meta name="description" content="A custom selector with searcher">
+
+    <link rel="stylesheet" type="text/css" href="da-selector.css"></link>
+    <style type="text/css">
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        font-family: arial, 'arial';
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .da-selector {
+        margin-top: 40px;
+      }
+
+      .da-selector-search {
+        font-family: arial, 'arial';
+        font-size: 13px;
+      }
+    </style>
   </head>
   <body>
+    <button id="btn-toggle-panel">toggle panel expanded</button>
+
+    <p>Your choice is: <span id="user-choice"></span></p>
+
+    <div id="demo-selector"></div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="da-selector.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        var SelectorHandler = $('#demo-selector').initDaSelector({
+          needSearcher: true,
+          isTriangleShown: true,
+          placeholder: 'This is yield name',
+          inputID: 'value-storage',
+          optionDataList: getRandomData(20),
+        })
+
+        var $doc = $(document)
+
+        $doc.on('change', '#value-storage', function (event) {
+          $('#user-choice').text(event.target.title)
+        })
+        $('#value-storage').trigger('change')
+
+        $doc.on('click', '#btn-toggle-panel', function (event) {
+          $('.da-selector').trigger('click')
+        })
+      })
+
+      function getRandomData(length) {
+        var result = []
+          , i
+
+        result.push({
+          id: 'id-0',
+          display: 'Please select an option',
+        })
+
+        for (i = 1; i < length; i++) {
+          result.push({
+            id: `id-${i}`,
+            display: `${i} - ${Math.random().toString(16).slice(2)}`,
+          })
+        }
+
+        return result
+      }
+    </script>
   </body>
 </html>
