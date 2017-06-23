@@ -190,9 +190,8 @@
     if ($selectedOption.length < 1) return false
 
     var $input = $('#'+config.inputID)
-    $input.val(value).trigger('change')
-
     var display = $selectedOption.text().trim()
+    $input.attr('title', display).val(value).trigger('change')
     $target.find('.'+classSet.placeholder).text(display)
     config.needSearcher && $target.find('.'+classSet.search).attr('placeholder', display)
 
