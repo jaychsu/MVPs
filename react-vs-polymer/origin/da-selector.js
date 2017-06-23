@@ -82,7 +82,7 @@
   function addListener($target, config) {
     var $body = $('body')
     var targetSelector = $target.selector
-    var isMenuVisible = false
+    var isPanelVisible = false
     var selectorValue = null
 
     $body.on('click', function (e) {
@@ -92,12 +92,12 @@
       var isInScope = $target.attr('id') === $elem.attr('id') || $target.find(e.target).length > 0
 
       if (isInScope) {
-        isMenuVisible = !isMenuVisible
+        isPanelVisible = !isPanelVisible
       } else {
-        isMenuVisible = false
+        isPanelVisible = false
       }
 
-      togglePanel($target, isMenuVisible)
+      togglePanel($target, isPanelVisible)
     })
 
     $body.on('click', targetSelector+' .'+classSet.item, function (e) {
@@ -130,8 +130,8 @@
     })
   }
 
-  function togglePanel($target, isOpen) {
-    if (isOpen) {
+  function togglePanel($target, isPanelVisible) {
+    if (isPanelVisible) {
       $target.addClass('is-expanded')
       $target.find('.'+classSet.panel).removeClass('hide')
       $target.find('.'+classSet.search).focus()
