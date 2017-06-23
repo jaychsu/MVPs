@@ -126,7 +126,7 @@
     } else {
       $target.removeClass('is-expanded')
       $target.find('.'+classSet.panel).addClass('hide')
-      $target.find('.'+classSet.search).val('').trigger('keyup')
+      $target.find('.'+classSet.search).val('')
     }
   }
 
