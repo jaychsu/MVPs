@@ -54,9 +54,7 @@
     $target.html(generateSelectChild(config))
     addListener($target, config)
 
-    _setValue($target, config, config.optionDataList[0].id)
-
-    return {
+    var handler = {
       'setValue': function (value) {
         return _setValue($target, config, value)
       },
@@ -70,6 +68,10 @@
         return _updateOptionList($target, optionDataList)
       }
     }
+
+    handler.resetValue()
+
+    return handler
   }
 
   function addListener($target, config) {
