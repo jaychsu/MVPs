@@ -18,7 +18,7 @@
     </style>
 
     <div
-      class$="[[getPanelClassList(classSet.main, isPanelExpanded)]]"
+      class$="[[getPanelClassList(classSet.main, isPanelVisible)]]"
       on-click="onSelectorClick"
     >
       <div class$="[[classSet.placeholder]]">[[selectedOptionData.display]]</div>
@@ -35,7 +35,7 @@
 
       <span class$="[[classSet.triangle]]"></span>
 
-      <div class$="[[classSet.panel]]" hidden$="[[isOptionListHidden]]">
+      <div class$="[[classSet.panel]]" hidden$="[[!isPanelVisible]]">
         <ul class$="[[classSet.list]]">
           <template is="dom-repeat" items="{{optionDataList}}">
             <li
@@ -84,13 +84,9 @@
             type: Object,
             notify: true,
           },
-          isPanelExpanded: {
+          isPanelVisible: {
             type: Boolean,
             value: false,
-          },
-          isOptionListHidden: {
-            type: Boolean,
-            value: true,
           },
         }
       }
@@ -136,15 +132,14 @@
         if ( event.target.className.indexOf('da-selector-option') > -1
           || event.target.className.indexOf('da-selector-search') > -1
         ) return false
-        this.isPanelExpanded = !this.isPanelExpanded
-        this.isOptionListHidden = !this.isOptionListHidden
+        this.togglePanel()
 
-        if (this.isPanelExpanded) this.$['da-selector-searcher'].focus()
+        if (this.isPanelVisible) this.$['da-selector-searcher'].focus()
       }
 
-      getPanelClassList(existingClassList, isPanelExpanded) {
+      getPanelClassList(existingClassList, isPanelVisible) {
         let classList = existingClassList || ''
-        if (isPanelExpanded) classList += ' is-expanded'
+        if (isPanelVisible) classList += ' is-expanded'
         return classList
       }
 
@@ -156,14 +151,21 @@
         if (!optionData.display) optionData.display = optionData.id
         this.selectedOptionData = optionData
 
-        this.isPanelExpanded = false
-        this.isOptionListHidden = true
+        this.togglePanel(false)
       }
 
       getOptionClassList(existingClassList, selectedOptionId, optionId) {
         let classList = existingClassList || ''
         if (selectedOptionId === optionId) classList += ' active'
         return classList
+      }
+
+      togglePanel(isPanelVisible) {
+        if (typeof isPanelVisible === 'undefined') {
+          this.isPanelVisible = !this.isPanelVisible
+        } else {
+          this.isPanelVisible = !!isPanelVisible
+        }
       }
     }
 
