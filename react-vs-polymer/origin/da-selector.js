@@ -89,7 +89,11 @@
     var selectorValue = null
 
     $target.on('toggle-panel', function (e, isOpen) {
-      if (typeof isOpen === 'undefined') isOpen = !isPanelVisible
+      if (typeof isOpen === 'undefined') {
+        isOpen = !isPanelVisible
+      } else {
+        isOpen = !!isOpen
+      }
       isPanelVisible = isOpen
       togglePanel($target, isOpen)
     })
