@@ -10,8 +10,6 @@
       }
     </style>
 
-    <button on-click="togglePanelExpanded">toggle panel expanded</button>
-
     <p>Your choice is: [[selectedOptionData.display]]</p>
 
     <da-selector
@@ -19,8 +17,6 @@
       option-data-list="{{optionDataList}}"
       placeholder="This is yield name"
 
-      is-panel-expanded="{{isPanelExpanded}}"
-      is-option-list-hidden="{{isOptionListHidden}}"
       selected-option-data="{{selectedOptionData}}"
     />
   </template>
@@ -31,15 +27,6 @@
       static get properties() {
         return {
           optionDataList: Array,
-          isPanelExpanded: {
-            type: Boolean,
-            value: false,
-          },
-          isOptionListHidden: {
-            type: Boolean,
-            value: true,
-          },
-
           selectedOptionData: Object,
         }
       }
@@ -48,11 +35,6 @@
         super()
 
         this.optionDataList = this.getRandomData(20)
-      }
-
-      togglePanelExpanded() {
-        this.isPanelExpanded = !this.isPanelExpanded
-        this.isOptionListHidden = !this.isOptionListHidden
       }
 
       getRandomData(length) {

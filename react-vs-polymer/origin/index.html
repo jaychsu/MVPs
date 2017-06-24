@@ -31,8 +31,6 @@
     </style>
   </head>
   <body>
-    <button id="btn-toggle-panel">toggle panel expanded</button>
-
     <p>Your choice is: <span id="user-choice"></span></p>
 
     <div id="demo-selector"></div>
@@ -51,12 +49,6 @@
             var displayValue = $('#demo-selector').find('[data-value="'+newValue+'"]').attr('title')
             $('#user-choice').text(displayValue)
           },
-        })
-
-        var $doc = $(document)
-
-        $doc.on('click', '#btn-toggle-panel', function (event) {
-          SelectorHandler.togglePanel()
         })
       })
 
