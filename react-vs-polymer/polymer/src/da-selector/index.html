@@ -125,7 +125,12 @@
           this.optionDataList = (searchResults.length > 0)
             ? searchResults
             : [{ id: DaSelector.idNoResult, display: 'no result' }]
-        })
+        }, false)
+
+        window.addEventListener('click', event => {
+          const isOutsideComponent = !event.path.find(path => path === this)
+          if (isOutsideComponent) this.togglePanel(false)
+        }, false)
       }
 
       onSelectorClick(event) {
