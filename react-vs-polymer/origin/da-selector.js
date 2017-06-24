@@ -21,6 +21,7 @@
   }
 
   var NULL_FN = function () {}
+  var idNoResult = 'no-result'
 
   $.fn.initDaSelector = function (cfg) {
     var $target = this
@@ -117,6 +118,8 @@
       var $this = $(this)
       var value = $this.data('value')
 
+      if (value === idNoResult) return false
+
       _setValue($target, config, value)
     })
 
@@ -139,6 +142,10 @@
         if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
       })
 
+      searchResults = (searchResults.length > 0)
+        ? searchResults
+        : [{ id: idNoResult, display: 'no result' }]
+
       _updateOptionList($target, searchResults)
     })
   }
@@ -151,7 +158,6 @@
     } else {
       $target.removeClass('is-expanded')
       $target.find('.'+classSet.panel).addClass('hide')
-      $target.find('.'+classSet.search).val('')
     }
   }
 
