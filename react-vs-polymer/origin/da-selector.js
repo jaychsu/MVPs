@@ -99,6 +99,12 @@
       togglePanel($target, isOpen)
     })
 
+    // // A way more concise to check if it is within the component scope
+    // window.addEventListener('click', event => {
+    //   const isOutsideComponent = !event.path.find(path => path === $target[0])
+    //   console.log(isOutsideComponent)
+    // }, false)
+
     $body.on('click', function (e) {
       if ((e.target.className || '').indexOf(classSet.search) > -1) return false
 
