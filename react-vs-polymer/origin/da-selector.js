@@ -71,6 +71,9 @@
       },
       'updateOptionList': function (optionDataList) {
         return _updateOptionList($target, optionDataList)
+      },
+      'togglePanel': function (isPanelVisible) {
+        $target.trigger('toggle-panel', isPanelVisible)
       }
     }
 
@@ -84,6 +87,12 @@
     var targetSelector = $target.selector
     var isPanelVisible = false
     var selectorValue = null
+
+    $target.on('toggle-panel', function (e, isOpen) {
+      if (typeof isOpen === 'undefined') isOpen = !isPanelVisible
+      isPanelVisible = isOpen
+      togglePanel($target, isOpen)
+    })
 
     $body.on('click', function (e) {
       if ((e.target.className || '').indexOf(classSet.search) > -1) return false
