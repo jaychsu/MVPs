@@ -22453,8 +22453,32 @@ var DemoApp = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_daSelector2.default, null)
+        _react2.default.createElement(_daSelector2.default, {
+          id: 'demo-selector',
+          optionDataList: this.getRandomData(20),
+          placeholder: 'This is yield name'
+        })
       );
+    }
+  }, {
+    key: 'getRandomData',
+    value: function getRandomData(length) {
+      var result = [],
+          i = void 0;
+
+      result.push({
+        id: 'id-0',
+        display: 'Please select an option'
+      });
+
+      for (i = 1; i < length; i++) {
+        result.push({
+          id: 'id-' + i,
+          display: i + ' - ' + Math.random().toString(16).slice(2)
+        });
+      }
+
+      return result;
     }
   }]);
 
@@ -22490,22 +22514,75 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var OptionData = _react.PropTypes.shape({
+  id: _react.PropTypes.string,
+  display: _react.PropTypes.string
+});
+
 var DaSelector = function (_Component) {
   _inherits(DaSelector, _Component);
 
-  function DaSelector() {
+  function DaSelector(props) {
     _classCallCheck(this, DaSelector);
 
-    return _possibleConstructorReturn(this, (DaSelector.__proto__ || Object.getPrototypeOf(DaSelector)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (DaSelector.__proto__ || Object.getPrototypeOf(DaSelector)).call(this, props));
+
+    _this.state = {
+      optionDataList: props.optionDataList,
+      selectedOptionData: props.selectedOptionData || props.optionDataList[0],
+      isPanelVisible: props.isPanelVisible
+    };
+    return _this;
   }
 
   _createClass(DaSelector, [{
     key: 'render',
     value: function render() {
+      var classSet = DaSelector.classSet;
+
       return _react2.default.createElement(
         'div',
-        null,
-        'Hello World!'
+        { className: classSet.main },
+        _react2.default.createElement(
+          'div',
+          { className: classSet.placeholder },
+          this.state.selectedOptionData.display
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: classSet.searchWrap },
+          _react2.default.createElement('input', {
+            className: classSet.search,
+            type: 'text',
+            placeholder: this.state.selectedOptionData.display
+          }),
+          _react2.default.createElement('span', { className: classSet.searchIcon })
+        ),
+        _react2.default.createElement('span', { className: classSet.triangle }),
+        _react2.default.createElement(
+          'div',
+          { className: classSet.panel },
+          _react2.default.createElement(
+            'ul',
+            { className: classSet.list },
+            this.state.optionDataList.map(function (optionData) {
+              return _react2.default.createElement(
+                'li',
+                {
+                  key: optionData.id,
+                  className: classSet.item
+                },
+                optionData.display
+              );
+            })
+          )
+        ),
+        _react2.default.createElement(
+          'label',
+          { htmlFor: this.props.id },
+          this.props.placeholder
+        ),
+        _react2.default.createElement('input', { id: this.props.id, type: 'hidden' })
       );
     }
   }]);
@@ -22513,6 +22590,29 @@ var DaSelector = function (_Component) {
   return DaSelector;
 }(_react.Component);
 
+DaSelector.idNoResult = 'no-result';
+DaSelector.classSet = {
+  main: 'da-selector',
+  panel: 'da-selector-panel',
+  list: 'da-selector-option-list',
+  item: 'da-selector-option-item',
+  searchWrap: 'da-selector-search-wrap',
+  searchIcon: 'da-selector-search-icon',
+  search: 'da-selector-search',
+  placeholder: 'da-selector-placeholder',
+  triangle: 'da-selector-triangle'
+};
+DaSelector.propTypes = {
+  id: _react.PropTypes.string.isRequired,
+  optionDataList: _react.PropTypes.arrayOf(OptionData).isRequired,
+  placeholder: _react.PropTypes.string,
+  selectedOptionData: OptionData,
+  isPanelVisible: _react.PropTypes.bool
+};
+DaSelector.defaultProps = {
+  placeholder: '',
+  isPanelVisible: false
+};
 exports.default = DaSelector;
 
 /***/ }),

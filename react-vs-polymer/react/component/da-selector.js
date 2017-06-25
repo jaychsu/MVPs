@@ -25,21 +25,65 @@ class DaSelector extends Component {
   };
 
   static propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    optionDataList: PropTypes.arrayOf(OptionData).isRequired,
     placeholder: PropTypes.string,
-    optionDataList: PropTypes.arrayOf(OptionData),
     selectedOptionData: OptionData,
     isPanelVisible: PropTypes.bool,
   };
 
+  static defaultProps = {
+    placeholder: '',
+    isPanelVisible: false,
+  };
+
   constructor(props) {
     super(props)
+
+    this.state = {
+      optionDataList: props.optionDataList,
+      selectedOptionData: props.selectedOptionData || props.optionDataList[0],
+      isPanelVisible: props.isPanelVisible,
+    }
   }
 
   render() {
+    const classSet = DaSelector.classSet
+
     return (
-      <div>
-        Hello World!
+      <div className={classSet.main}>
+        <div className={classSet.placeholder}>
+          { this.state.selectedOptionData.display }
+        </div>
+
+        <div className={classSet.searchWrap}>
+          <input
+            className={classSet.search}
+            type="text"
+            placeholder={this.state.selectedOptionData.display}
+          />
+          <span className={classSet.searchIcon}></span>
+        </div>
+
+        <span className={classSet.triangle}></span>
+
+        <div className={classSet.panel}>
+          <ul className={classSet.list}>
+            { this.state.optionDataList.map(optionData => (
+                <li
+                  key={optionData.id}
+                  className={classSet.item}
+                >
+                  { optionData.display }
+                </li>
+            ))}
+          </ul>
+        </div>
+
+        <label htmlFor={this.props.id}>
+          { this.props.placeholder }
+        </label>
+        <input id={this.props.id} type="hidden" />
       </div>
     )
   }
