@@ -1,0 +1,18 @@
+{
+  "name": "demo-da-selector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.entry.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaych Su",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "3.0.0"
+  },
+  "dependencies": {
+    "react": "15.6.1",
+    "react-dom": "15.6.1"
+  }
+}
