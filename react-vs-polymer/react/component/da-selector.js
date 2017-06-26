@@ -10,6 +10,8 @@ const OptionData = PropTypes.shape({
   display: PropTypes.string,
 })
 
+const NULL_FN = () => {}
+
 class DaSelector extends Component {
   static idNoResult = 'no-result';
 
@@ -31,11 +33,13 @@ class DaSelector extends Component {
     placeholder: PropTypes.string,
     selectedOptionData: OptionData,
     isPanelVisible: PropTypes.bool,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     placeholder: '',
     isPanelVisible: false,
+    onChange: NULL_FN,
   };
 
   constructor(props) {
@@ -114,6 +118,10 @@ class DaSelector extends Component {
     if (optionData.id === DaSelector.idNoResult) return false
 
     if (!optionData.display) optionData.display = optionData.id
+
+    const prevOptionData = this.state.selectedOptionData
+    this.props.onChange(optionData, prevOptionData)
+
     this.setState({
       selectedOptionData: optionData,
     })

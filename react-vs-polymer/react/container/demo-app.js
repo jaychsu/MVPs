@@ -4,13 +4,27 @@ import './page-override.css'
 import DaSelector from '../component/da-selector'
 
 class DemoApp extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      selectOption: {},
+    }
+  }
+
   render() {
     return (
       <div>
+        <p>Your choice is: <span>{this.state.selectOption.display}</span></p>
         <DaSelector
           id="demo-selector"
           optionDataList={this.getRandomData(20)}
           placeholder="This is yield name"
+          onChange={(newOption, oldOption) => {
+            this.setState({
+              selectOption: newOption,
+            })
+          }}
         />
       </div>
     )
