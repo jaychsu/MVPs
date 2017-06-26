@@ -22426,7 +22426,9 @@ var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _daSelector = __webpack_require__(186);
+__webpack_require__(186);
+
+var _daSelector = __webpack_require__(187);
 
 var _daSelector2 = _interopRequireDefault(_daSelector);
 
@@ -22441,22 +22443,44 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DemoApp = function (_Component) {
   _inherits(DemoApp, _Component);
 
-  function DemoApp() {
+  function DemoApp(props) {
     _classCallCheck(this, DemoApp);
 
-    return _possibleConstructorReturn(this, (DemoApp.__proto__ || Object.getPrototypeOf(DemoApp)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (DemoApp.__proto__ || Object.getPrototypeOf(DemoApp)).call(this, props));
+
+    _this.state = {
+      selectOption: {}
+    };
+    return _this;
   }
 
   _createClass(DemoApp, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'p',
+          null,
+          'Your choice is: ',
+          _react2.default.createElement(
+            'span',
+            null,
+            this.state.selectOption.display
+          )
+        ),
         _react2.default.createElement(_daSelector2.default, {
           id: 'demo-selector',
           optionDataList: this.getRandomData(20),
-          placeholder: 'This is yield name'
+          placeholder: 'This is yield name',
+          onChange: function onChange(newOption, oldOption) {
+            _this2.setState({
+              selectOption: newOption
+            });
+          }
         })
       );
     }
@@ -22489,6 +22513,12 @@ exports.default = DemoApp;
 
 /***/ }),
 /* 186 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22504,7 +22534,11 @@ var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(187);
+var _classnames = __webpack_require__(188);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+__webpack_require__(189);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22519,6 +22553,8 @@ var OptionData = _react.PropTypes.shape({
   display: _react.PropTypes.string
 });
 
+var NULL_FN = function NULL_FN() {};
+
 var DaSelector = function (_Component) {
   _inherits(DaSelector, _Component);
 
@@ -22527,22 +22563,76 @@ var DaSelector = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (DaSelector.__proto__ || Object.getPrototypeOf(DaSelector)).call(this, props));
 
+    _this.handlePageEvent = function (event) {
+      var targetClass = event.target.className;
+      var isOutsideComponent = !event.path.find(function (path) {
+        return path.className === DaSelector.classSet.main;
+      });
+      var needNoResponse = targetClass.indexOf('da-selector-option') > -1 || targetClass.indexOf('da-selector-search') > -1;
+
+      if (needNoResponse) {
+        return false;
+      } else if (isOutsideComponent) {
+        _this.togglePanel(false);
+        return false;
+      } else {
+        _this.togglePanel();
+        if (_this.state.isPanelVisible) _this.searcher.focus();
+      }
+    };
+
+    _this.handleSearcherEvent = function (event) {
+      var value = event.target.value;
+      if (typeof value !== 'string') return false;
+
+      var searchResults = _this.props.optionDataList.filter(function (optionData) {
+        if (!optionData) return false;
+        var searchYield = [optionData.id || '', optionData.display || ''].join('::');
+        if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true;
+        return false;
+      });
+
+      searchResults = searchResults.length > 0 ? searchResults : [{ id: DaSelector.idNoResult, display: 'no result' }];
+
+      _this.setState({
+        optionDataList: searchResults
+      });
+    };
+
     _this.state = {
       optionDataList: props.optionDataList,
       selectedOptionData: props.selectedOptionData || props.optionDataList[0],
       isPanelVisible: props.isPanelVisible
     };
+
+    window.addEventListener('click', _this.handlePageEvent, false);
     return _this;
   }
 
   _createClass(DaSelector, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.searcher.addEventListener('keyup', this.handleSearcherEvent, false);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      window.removeEventListener('click', this.handlePageEvent, false);
+      this.searcher.removeEventListener('keyup', this.handleSearcherEvent, false);
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var classSet = DaSelector.classSet;
 
       return _react2.default.createElement(
         'div',
-        { className: classSet.main },
+        { className: (0, _classnames2.default)(classSet.main, {
+            'is-expanded': this.state.isPanelVisible
+          })
+        },
         _react2.default.createElement(
           'div',
           { className: classSet.placeholder },
@@ -22554,14 +22644,20 @@ var DaSelector = function (_Component) {
           _react2.default.createElement('input', {
             className: classSet.search,
             type: 'text',
-            placeholder: this.state.selectedOptionData.display
+            placeholder: this.state.selectedOptionData.display,
+            ref: function ref(input) {
+              return _this2.searcher = input;
+            }
           }),
           _react2.default.createElement('span', { className: classSet.searchIcon })
         ),
         _react2.default.createElement('span', { className: classSet.triangle }),
         _react2.default.createElement(
           'div',
-          { className: classSet.panel },
+          { className: (0, _classnames2.default)(classSet.panel, {
+              'hide': !this.state.isPanelVisible
+            })
+          },
           _react2.default.createElement(
             'ul',
             { className: classSet.list },
@@ -22570,7 +22666,12 @@ var DaSelector = function (_Component) {
                 'li',
                 {
                   key: optionData.id,
-                  className: classSet.item
+                  className: (0, _classnames2.default)(classSet.item, {
+                    'active': optionData.id === _this2.state.selectedOptionData.id
+                  }),
+                  onClick: function onClick() {
+                    return _this2.selectOption(optionData);
+                  }
                 },
                 optionData.display
               );
@@ -22584,6 +22685,33 @@ var DaSelector = function (_Component) {
         ),
         _react2.default.createElement('input', { id: this.props.id, type: 'hidden' })
       );
+    }
+  }, {
+    key: 'selectOption',
+    value: function selectOption(optionData) {
+      if (optionData.id === DaSelector.idNoResult) return false;
+
+      if (!optionData.display) optionData.display = optionData.id;
+
+      var prevOptionData = this.state.selectedOptionData;
+      this.props.onChange(optionData, prevOptionData);
+
+      this.setState({
+        selectedOptionData: optionData
+      });
+
+      this.togglePanel(false);
+    }
+  }, {
+    key: 'togglePanel',
+    value: function togglePanel(isPanelVisible) {
+      if (typeof isPanelVisible === 'undefined') {
+        isPanelVisible = !this.state.isPanelVisible;
+      } else {
+        isPanelVisible = !!isPanelVisible;
+      }
+
+      this.setState({ isPanelVisible: isPanelVisible });
     }
   }]);
 
@@ -22607,16 +22735,73 @@ DaSelector.propTypes = {
   optionDataList: _react.PropTypes.arrayOf(OptionData).isRequired,
   placeholder: _react.PropTypes.string,
   selectedOptionData: OptionData,
-  isPanelVisible: _react.PropTypes.bool
+  isPanelVisible: _react.PropTypes.bool,
+  onChange: _react.PropTypes.func
 };
 DaSelector.defaultProps = {
   placeholder: '',
-  isPanelVisible: false
+  isPanelVisible: false,
+  onChange: NULL_FN
 };
 exports.default = DaSelector;
 
 /***/ }),
-/* 187 */
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+
+/***/ }),
+/* 189 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
