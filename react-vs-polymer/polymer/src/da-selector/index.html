@@ -134,8 +134,9 @@
       }
 
       onSelectorClick(event) {
-        if ( event.target.className.indexOf('da-selector-option') > -1
-          || event.target.className.indexOf('da-selector-search') > -1
+        const targetClass = event.target.className
+        if ( targetClass.indexOf('da-selector-option') > -1
+          || targetClass.indexOf('da-selector-search') > -1
         ) return false
         this.togglePanel()
 
