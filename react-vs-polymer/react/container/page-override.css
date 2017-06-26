@@ -1,0 +1,19 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: arial, 'arial';
+}
+
+.hide {
+  display: none !important;
+}
+
+.da-selector {
+  margin-top: 40px;
+}
+
+.da-selector-search {
+  font-family: arial, 'arial';
+  font-size: 13px;
+}
