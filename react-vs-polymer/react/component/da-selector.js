@@ -47,26 +47,16 @@ class DaSelector extends Component {
       isPanelVisible: props.isPanelVisible,
     }
 
-    window.addEventListener('click', event => {
-      const targetClass = event.target.className
-      const isOutsideComponent = !event.path.find(path => path.className === DaSelector.classSet.main)
-      const needNoResponse =
-        targetClass.indexOf('da-selector-option') > -1
-        || targetClass.indexOf('da-selector-search') > -1
+    window.addEventListener('click', this.handlePageEvent, false)
+  }
 
-      if (needNoResponse) {
-        // need no response
-        return false
-      } else if (isOutsideComponent) {
-        // outside component
-        this.togglePanel(false)
-        return false
-      } else {
-        // toggle panel
-        this.togglePanel()
-        if (this.state.isPanelVisible) this.searcher.focus()
-      }
-    }, false)
+  componentDidMount() {
+    this.searcher.addEventListener('keyup', this.handleSearcherEvent, false)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.handlePageEvent, false)
+    this.searcher.removeEventListener('keyup', this.handleSearcherEvent, false)
   }
 
   render() {
@@ -140,6 +130,50 @@ class DaSelector extends Component {
 
     this.setState({ isPanelVisible })
   }
+
+  handlePageEvent = event => {
+    const targetClass = event.target.className
+    const isOutsideComponent = !event.path.find(path => path.className === DaSelector.classSet.main)
+    const needNoResponse =
+      targetClass.indexOf('da-selector-option') > -1
+      || targetClass.indexOf('da-selector-search') > -1
+
+    if (needNoResponse) {
+      // need no response
+      return false
+    } else if (isOutsideComponent) {
+      // outside component
+      this.togglePanel(false)
+      return false
+    } else {
+      // toggle panel
+      this.togglePanel()
+      if (this.state.isPanelVisible) this.searcher.focus()
+    }
+  };
+
+  handleSearcherEvent = event => {
+    const value = event.target.value
+    if (typeof value !== 'string') return false
+
+    let searchResults = this.props.optionDataList.filter(optionData => {
+      if (!optionData) return false
+      const searchYield = [
+        optionData.id || '',
+        optionData.display || ''
+      ].join('::')
+      if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
+      return false
+    })
+
+    searchResults = (searchResults.length > 0)
+      ? searchResults
+      : [{ id: DaSelector.idNoResult, display: 'no result' }]
+
+    this.setState({
+      optionDataList: searchResults,
+    })
+  };
 }
 
 export default DaSelector
