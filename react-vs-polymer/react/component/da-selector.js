@@ -55,6 +55,7 @@ class DaSelector extends Component {
   }
 
   componentDidMount() {
+    this.selectOption(this.props.optionDataList[0])
     this.searcher.addEventListener('keyup', this.handleSearcherEvent, false)
   }
 
