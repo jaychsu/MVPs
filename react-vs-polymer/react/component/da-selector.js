@@ -54,12 +54,15 @@ class DaSelector extends Component {
         targetClass.indexOf('da-selector-option') > -1
         || targetClass.indexOf('da-selector-search') > -1
 
-      if (isOutsideComponent) {
+      if (needNoResponse) {
+        // need no response
+        return false
+      } else if (isOutsideComponent) {
+        // outside component
         this.togglePanel(false)
         return false
-      } else if (needNoResponse) {
-        return false
       } else {
+        // toggle panel
         this.togglePanel()
         if (this.state.isPanelVisible) this.searcher.focus()
       }
