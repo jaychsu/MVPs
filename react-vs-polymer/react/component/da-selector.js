@@ -12,6 +12,7 @@ const OptionData = PropTypes.shape({
 
 const NULL_FN = () => {}
 
+// To expose method to `togglePanel`, just refer commit `44059e28952b7ee70454cc6b7b2d7945bc3d29bd`
 class DaSelector extends Component {
   static idNoResult = 'no-result';
 
