@@ -22612,6 +22612,7 @@ var DaSelector = function (_Component) {
   _createClass(DaSelector, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      this.selectOption(this.props.optionDataList[0]);
       this.searcher.addEventListener('keyup', this.handleSearcherEvent, false);
     }
   }, {

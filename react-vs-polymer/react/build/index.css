@@ -53,6 +53,10 @@ body {
   font-family: arial, 'arial';
 }
 
+body {
+  padding: 16px 8px;
+}
+
 .hide {
   display: none !important;
 }
