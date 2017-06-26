@@ -2,6 +2,7 @@ import React, {
   Component,
   PropTypes,
 } from 'react'
+import clas from 'classnames'
 import './da-selector.css'
 
 const OptionData = PropTypes.shape({
@@ -69,7 +70,10 @@ class DaSelector extends Component {
     const classSet = DaSelector.classSet
 
     return (
-      <div className={classSet.main}>
+      <div className={clas(classSet.main, {
+          'is-expanded': this.state.isPanelVisible,
+        })}
+      >
         <div className={classSet.placeholder}>
           { this.state.selectedOptionData.display }
         </div>
@@ -86,12 +90,17 @@ class DaSelector extends Component {
 
         <span className={classSet.triangle}></span>
 
-        <div className={classSet.panel}>
+        <div className={clas(classSet.panel, {
+            'hide': !this.state.isPanelVisible,
+          })}
+        >
           <ul className={classSet.list}>
             { this.state.optionDataList.map(optionData => (
                 <li
                   key={optionData.id}
-                  className={classSet.item}
+                  className={clas(classSet.item, {
+                    'active': optionData.id === this.state.selectedOptionData.id,
+                  })}
                   onClick={() => this.selectOption(optionData)}
                 >
                   { optionData.display }
