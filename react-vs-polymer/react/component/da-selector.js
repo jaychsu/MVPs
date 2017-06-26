@@ -45,6 +45,24 @@ class DaSelector extends Component {
       selectedOptionData: props.selectedOptionData || props.optionDataList[0],
       isPanelVisible: props.isPanelVisible,
     }
+
+    window.addEventListener('click', event => {
+      const targetClass = event.target.className
+      const isOutsideComponent = !event.path.find(path => path.className === DaSelector.classSet.main)
+      const needNoResponse =
+        targetClass.indexOf('da-selector-option') > -1
+        || targetClass.indexOf('da-selector-search') > -1
+
+      if (isOutsideComponent) {
+        this.togglePanel(false)
+        return false
+      } else if (needNoResponse) {
+        return false
+      } else {
+        this.togglePanel()
+        if (this.state.isPanelVisible) this.searcher.focus()
+      }
+    }, false)
   }
 
   render() {
@@ -61,6 +79,7 @@ class DaSelector extends Component {
             className={classSet.search}
             type="text"
             placeholder={this.state.selectedOptionData.display}
+            ref={input => this.searcher = input}
           />
           <span className={classSet.searchIcon}></span>
         </div>
@@ -73,6 +92,7 @@ class DaSelector extends Component {
                 <li
                   key={optionData.id}
                   className={classSet.item}
+                  onClick={() => this.selectOption(optionData)}
                 >
                   { optionData.display }
                 </li>
@@ -86,6 +106,27 @@ class DaSelector extends Component {
         <input id={this.props.id} type="hidden" />
       </div>
     )
+  }
+
+  selectOption(optionData) {
+    if (optionData.id === DaSelector.idNoResult) return false
+
+    if (!optionData.display) optionData.display = optionData.id
+    this.setState({
+      selectedOptionData: optionData,
+    })
+
+    this.togglePanel(false)
+  }
+
+  togglePanel(isPanelVisible) {
+    if (typeof isPanelVisible === 'undefined') {
+      isPanelVisible = !this.state.isPanelVisible
+    } else {
+      isPanelVisible = !!isPanelVisible
+    }
+
+    this.setState({ isPanelVisible })
   }
 }
 
