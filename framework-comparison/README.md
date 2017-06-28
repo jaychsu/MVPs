@@ -9,15 +9,15 @@ The comparison between React and Polymer
 - in jQuery(origin version)
     - [repository](./origin)
     - [source code](./origin/da-selector.js)
-    - [demo](https://pages.git.autodesk.com/suj/react-vs-polymer/react-vs-polymer/origin)
+    - [demo](https://jaychsu.github.io/MVPs/framework-comparison/origin)
 - in Polymer
     - [repository](./polymer)
     - [source code](./polymer/src/da-selector/index.html)
-    - [demo](https://pages.git.autodesk.com/suj/react-vs-polymer/react-vs-polymer/polymer/build/es5-bundled)
+    - [demo](https://jaychsu.github.io/MVPs/framework-comparison/polymer/build/es5-bundled)
 - in React
     - [repository](./react)
     - [source code](./react/component/da-selector.js)
-    - [demo](https://pages.git.autodesk.com/suj/react-vs-polymer/react-vs-polymer/react/build)
+    - [demo](https://jaychsu.github.io/MVPs/framework-comparison/react/build)
 
 ## Summary
 
