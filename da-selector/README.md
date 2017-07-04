@@ -1,10 +1,5 @@
-The comparison between React and Polymer
+da-selector
 ======
-
-- [React](https://facebook.github.io/react/)
-- [Polymer](https://www.polymer-project.org/)
-
-## Result
 
 - in jQuery(origin version)
     - [repository](./origin)
@@ -18,9 +13,7 @@ The comparison between React and Polymer
     - [repository](./react)
     - [component code](./react/component/da-selector.js)
     - [demo](https://jaychsu.github.io/MVPs/framework-comparison/react/build)
-
-## Summary
-
-- Configurable
-- Use with another JS lib 
-- Popularity
+- in Vue
+    - repository
+    - component code
+    - demo
