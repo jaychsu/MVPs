@@ -1,5 +1,3 @@
-bower_components
-!framework-comparison/polymer/build/es5-bundled/bower_components
-
 node_modules
-test
+bower_components
+!**/polymer/build
