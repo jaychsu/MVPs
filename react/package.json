@@ -9,6 +9,11 @@
   },
   "author": "Jaych Su",
   "license": "MIT",
+  "dependencies": {
+    "classnames": "2.2.5",
+    "react": "15.6.1",
+    "react-dom": "15.6.1"
+  },
   "devDependencies": {
     "babel-core": "6.25.0",
     "babel-loader": "7.1.0",
@@ -18,10 +23,5 @@
     "css-loader": "0.28.4",
     "extract-text-webpack-plugin": "2.1.2",
     "webpack": "3.0.0"
-  },
-  "dependencies": {
-    "classnames": "2.2.5",
-    "react": "15.6.1",
-    "react-dom": "15.6.1"
   }
 }

@@ -2,9 +2,10 @@
   "name": "demo-da-selector",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.entry.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build",
+    "build": "node node_modules/webpack/bin/webpack --config webpack.config.js"
   },
   "author": "Jaych Su",
   "license": "MIT",
