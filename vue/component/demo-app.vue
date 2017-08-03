@@ -13,5 +13,5 @@
   }
 </script>
 
-<style lang="less">
-</style>
+<style src="../shared/reset.css"></style>
+<style src="./demo-app.css"></style>

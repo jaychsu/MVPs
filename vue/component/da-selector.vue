@@ -9,5 +9,4 @@
   }
 </script>
 
-<style lang="less">
-</style>
+<style src="./da-selector.css"></style>

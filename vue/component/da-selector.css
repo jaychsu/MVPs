@@ -1,0 +1,213 @@
+/* START: shape */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.da-selector {
+  width: 200px;
+  height: 40px;
+  padding: 10px 14px;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  line-height: 1.5;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: .5px;
+  color: #2b2d30;
+  background-color: #fff;
+  background-image: none;
+  box-shadow: none;
+  appearance: none;
+}
+/* END: shape */
+
+/* START: da-selector */
+.da-selector {
+  position: relative;
+  padding-right: 22px;
+  transition: none;
+  cursor: pointer;
+}
+
+.da-selector.is-expanded {
+  border: 1px solid #e55e38;
+  box-shadow: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.da-selector.is-expanded {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.da-selector .da-selector-triangle,
+.currency-dropdown .da-selector-triangle,
+.cc-state-group .da-selector-triangle,
+.cc-country-group .da-selector-triangle {
+  position: absolute;
+  right: 9px;
+  top: 16px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 6px solid #ccc;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  z-index: 199;
+}
+
+.da-selector .da-selector-placeholder,
+.da-selector .da-selector-search-wrap,
+.da-selector-option-list .da-selector-option-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.da-selector .da-selector-placeholder {
+  line-height: 20px;
+  z-index: 99;
+}
+
+.da-selector .da-selector-panel {
+  position: absolute;
+  left: -1px;
+  top: 100%;
+  box-sizing: content-box;
+  width: 100%;
+  border: 1px solid #cecece;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background-color: #fff;
+  overflow: hidden;
+  z-index: 299;
+}
+
+.da-selector.is-expanded .da-selector-panel {
+  border-top: 1px solid #e55e38;
+  box-shadow: 0 2px 2px rgba(204, 204, 204, .5);
+}
+
+.da-selector .da-selector-option-list {
+  max-height: 300px;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.da-selector-option-list .da-selector-option-item {
+  list-style: none;
+  padding: 10px 14px;
+}
+
+.da-selector-option-list .da-selector-option-item:hover {
+  background-color: #fafafa;
+}
+
+.da-selector-option-list .da-selector-option-item.active {
+  color: #e55e38;
+}
+
+.da-selector .da-selector-search-wrap {
+  display: none;
+  z-index: -1;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.da-selector.is-expanded .da-selector-search-wrap {
+  display: block;
+  z-index: 299;
+}
+
+.da-selector .da-selector-search {
+  width: 100%;
+  height: 100%;
+  padding: 10px 22px 10px 14px;
+  border: none;
+  letter-spacing: .5px;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.da-selector .da-selector-search-icon {
+  position: absolute;
+  top: 10px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+}
+
+.da-selector .da-selector-search-icon > img {
+  width: 100%;
+  height: auto;
+}
+/* END: da-selector */
+
+/* START: input-effect */
+.da-selector {
+  position: relative;
+}
+
+.da-selector > label {
+  display: none;
+}
+
+.da-selector > label {
+  position: absolute;
+  left: 20px;
+  top: 11px;
+}
+
+.da-selector > label {
+  max-width: 80%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.428571429;
+  letter-spacing: .5px;
+  color: #a0a0a0;
+  cursor: text;
+}
+
+.da-selector.is-expanded > label {
+  left: 5px;
+  top: -13px;
+}
+
+.da-selector.is-expanded > label {
+  max-width: 100%;
+
+  font-size: 10px;
+  color: #999;
+}
+
+.da-selector.is-expanded > label {
+  display: block;
+  top: -14px;
+}
+
+.da-selector.is-expanded > label {
+  left: 0;
+}
+/* END: input-effect */
