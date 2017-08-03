@@ -1,5 +1,6 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const Webpack = require('webpack')
 
 module.exports = {
   entry: {
@@ -10,9 +11,22 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   module: {
-    rules: [],
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          extractCSS: true,
+        },
+      },
+    ],
   },
   plugins: [
+    new Webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      }
+    }),
     new ExtractTextPlugin('[name].css'),
   ],
 }
