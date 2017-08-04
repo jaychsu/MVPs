@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.entry.js",
   "scripts": {
-    "start": "npm run build",
+    "start": "npm run dev",
+    "dev": "node node_modules/webpack/bin/webpack --config webpack.config.js --watch",
     "build": "node node_modules/webpack/bin/webpack --config webpack.config.js"
   },
   "author": "Jaych Su",
