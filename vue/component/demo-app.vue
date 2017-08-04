@@ -1,5 +1,10 @@
 <template lang="pug">
-  da-selector
+  da-selector(
+    id="demo-selector"
+    placeholder="This is yield name"
+    :optionDataList="optionDataList"
+    :onChange="onChange"
+  )
 </template>
 
 <script>
@@ -8,8 +13,30 @@
   export default {
     components: { DaSelector },
     data() {
-      return {}
+      return {
+        optionDataList: getRandomData(20),
+        onChange(newOption, oldOption) {},
+      }
     },
+  }
+
+  function getRandomData(length) {
+    let result = []
+      , i
+
+    result.push({
+      id: 'id-0',
+      display: 'Please select an option',
+    })
+
+    for (i = 1; i < length; i++) {
+      result.push({
+        id: `id-${i}`,
+        display: `${i} - ${Math.random().toString(16).slice(2)}`,
+      })
+    }
+
+    return result
   }
 </script>
 
