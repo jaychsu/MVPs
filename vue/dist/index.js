@@ -7718,15 +7718,42 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   components: { DaSelector: __WEBPACK_IMPORTED_MODULE_0__da_selector_vue__["a" /* default */] },
   data() {
-    return {};
+    return {
+      optionDataList: getRandomData(20),
+      onChange(newOption, oldOption) {}
+    };
   }
 });
+
+function getRandomData(length) {
+  let result = [],
+      i;
+
+  result.push({
+    id: 'id-0',
+    display: 'Please select an option'
+  });
+
+  for (i = 1; i < length; i++) {
+    result.push({
+      id: `id-${i}`,
+      display: `${i} - ${Math.random().toString(16).slice(2)}`
+    });
+  }
+
+  return result;
+}
 
 /***/ }),
 /* 8 */
@@ -7795,10 +7822,134 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+const OptionData = {
+  id: '',
+  display: ''
+};
+
+const ID_NO_RESULT = 'no-result';
+const NULL_FN = () => {};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    optionDataList: {
+      type: Array,
+      required: true,
+      default() {
+        return [OptionData];
+      }
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    selectedOptionData: {
+      type: Object,
+      default() {
+        return this.optionDataList[0];
+      }
+    },
+    isPanelVisible: {
+      type: Boolean,
+      default: false
+    },
+    onChange: {
+      type: Function,
+      default: NULL_FN
+    }
+  },
   data() {
-    return {};
+    return {
+      pri_isPanelVisible: this.isPanelVisible
+    };
+  },
+  methods: {
+    selectOption(optionData) {
+      if (optionData.id === ID_NO_RESULT) return false;
+
+      if (!optionData.display) optionData.display = optionData.id;
+
+      const prevOptionData = this.selectedOptionData;
+      this.onChange(optionData, prevOptionData);
+      this.selectedOptionData = optionData;
+
+      this.togglePanel(false);
+    },
+    togglePanel(isPanelVisible) {
+      if (typeof isPanelVisible === 'undefined') {
+        isPanelVisible = !this.pri_isPanelVisible;
+      } else {
+        isPanelVisible = !!isPanelVisible;
+      }
+
+      this.pri_isPanelVisible = isPanelVisible;
+    },
+    handlePageEvent(event) {
+      const targetClass = event.target.className;
+      const isOutsideComponent = !this.$refs['container'].contains(event.target);
+      const needNoResponse = targetClass.indexOf('da-selector-option') > -1 || targetClass.indexOf('da-selector-search') > -1;
+
+      if (needNoResponse) {
+        // need no response
+        return false;
+      } else if (isOutsideComponent) {
+        // outside component
+        this.togglePanel(false);
+        return false;
+      } else {
+        // toggle panel
+        this.togglePanel();
+        if (this.pri_isPanelVisible) {
+          // Here is a hack to use `focus` within `setTimeout`
+          setTimeout(() => this.$refs['searcher'].focus(), 0);
+        }
+      }
+    }
+  },
+
+  mounted() {
+    window.addEventListener('click', this.handlePageEvent, false);
+  },
+  beforeDestroy() {
+    window.removeEventListener('click', this.handlePageEvent, false);
   }
 });
 
@@ -7808,7 +7959,54 @@ if (false) {(function () {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c("div")
+  return _c('div', {
+    ref: "container",
+    staticClass: "da-selector",
+    class: {
+      'is-expanded': _vm.pri_isPanelVisible
+    }
+  }, [_c('div', {
+    staticClass: "da-selector-placeholder"
+  }, [_vm._v(_vm._s(_vm.selectedOptionData.display))]), _c('div', {
+    staticClass: "da-selector-search-wrap"
+  }, [_c('input', {
+    ref: "searcher",
+    staticClass: "da-selector-search",
+    attrs: {
+      "type": "text",
+      "placeholder": _vm.selectedOptionData.display
+    }
+  }), _c('span', {
+    staticClass: "da-selector-search-icon"
+  })]), _c('span', {
+    staticClass: "da-selector-triangle"
+  }), _c('div', {
+    staticClass: "da-selector-panel",
+    class: {
+      hide: !_vm.pri_isPanelVisible
+    }
+  }, [_c('ul', {
+    staticClass: "da-selector-option-list"
+  }, _vm._l((_vm.optionDataList), function(optionData) {
+    return _c('li', {
+      staticClass: "da-selector-option-item",
+      class: {
+        active: optionData.id === _vm.selectedOptionData.id
+      },
+      on: {
+        "click": function () { return _vm.selectOption(optionData); }
+      }
+    }, [_vm._v(_vm._s(optionData.display))])
+  }))]), _c('label', {
+    attrs: {
+      "for": _vm.id
+    }
+  }, [_vm._v(_vm._s(_vm.placeholder))]), _c('input', {
+    attrs: {
+      "type": "hidden",
+      "id": _vm.id
+    }
+  })])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -7827,7 +8025,14 @@ if (false) {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('da-selector')
+  return _c('da-selector', {
+    attrs: {
+      "id": "demo-selector",
+      "placeholder": "This is yield name",
+      "optionDataList": _vm.optionDataList,
+      "onChange": _vm.onChange
+    }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
