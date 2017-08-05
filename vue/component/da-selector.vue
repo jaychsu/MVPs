@@ -20,6 +20,7 @@
         li.da-selector-option-item(
           v-for="optionData in optionDataList"
           :class="{ active: optionData.id === selectedOptionData.id }"
+          @click="() => selectOption(optionData)"
         ) {{ optionData.display }}
 
     label(
@@ -75,7 +76,28 @@
     data() {
       return {}
     },
-    methods: {},
+    methods: {
+      selectOption(optionData) {
+        if (optionData.id === ID_NO_RESULT) return false
+
+        if (!optionData.display) optionData.display = optionData.id
+
+        const prevOptionData = this.selectedOptionData
+        this.onChange(optionData, prevOptionData)
+        this.selectedOptionData = optionData
+
+        this.togglePanel(false)
+      },
+      togglePanel(isPanelVisible) {
+        if (typeof isPanelVisible === 'undefined') {
+          isPanelVisible = !this.isPanelVisible
+        } else {
+          isPanelVisible = !!isPanelVisible
+        }
+
+        this.isPanelVisible = isPanelVisible
+      },
+    },
   }
 </script>
 
