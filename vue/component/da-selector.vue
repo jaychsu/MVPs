@@ -20,13 +20,11 @@
         li.da-selector-option-item(
           v-for="optionData in optionDataList"
           :class="{ active: optionData.id === selectedOptionData.id }"
-        )
-          | {{ optionData.display }}
+        ) {{ optionData.display }}
 
     label(
       :for="id"
-    )
-      | {{ placeholder }}
+    ) {{ placeholder }}
     input(
       type="hidden"
       :id="id"

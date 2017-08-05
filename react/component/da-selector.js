@@ -51,12 +51,12 @@ class DaSelector extends Component {
       selectedOptionData: props.selectedOptionData || props.optionDataList[0],
       isPanelVisible: props.isPanelVisible,
     }
-
-    window.addEventListener('click', this.handlePageEvent, false)
   }
 
   componentDidMount() {
     this.selectOption(this.props.optionDataList[0])
+
+    window.addEventListener('click', this.handlePageEvent, false)
     this.searcher.addEventListener('keyup', this.handleSearcherEvent, false)
   }
 
