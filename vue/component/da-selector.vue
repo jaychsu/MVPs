@@ -1,7 +1,7 @@
 <template lang="pug">
   .da-selector(
     ref="container"
-    :class="{ 'is-expanded': pri_isPanelVisible }"
+    :class="{ 'is-expanded': isPanelVisible_ }"
   )
     .da-selector-placeholder {{ selectedOptionData.display }}
 
@@ -16,7 +16,7 @@
     span.da-selector-triangle
 
     .da-selector-panel(
-      :class="{ hide: !pri_isPanelVisible }"
+      :class="{ hide: !isPanelVisible_ }"
     )
       ul.da-selector-option-list
         li.da-selector-option-item(
@@ -77,7 +77,7 @@
     },
     data() {
       return {
-        pri_isPanelVisible: this.isPanelVisible,
+        isPanelVisible_: this.isPanelVisible,
       }
     },
     methods: {
@@ -94,12 +94,12 @@
       },
       togglePanel(isPanelVisible) {
         if (typeof isPanelVisible === 'undefined') {
-          isPanelVisible = !this.pri_isPanelVisible
+          isPanelVisible = !this.isPanelVisible_
         } else {
           isPanelVisible = !!isPanelVisible
         }
 
-        this.pri_isPanelVisible = isPanelVisible
+        this.isPanelVisible_ = isPanelVisible
       },
       handlePageEvent(event) {
         const targetClass = event.target.className
@@ -118,7 +118,7 @@
         } else {
           // toggle panel
           this.togglePanel()
-          if (this.pri_isPanelVisible) {
+          if (this.isPanelVisible_) {
             // Here is a hack to use `focus` within `setTimeout`
             setTimeout(() => this.$refs['searcher'].focus(), 0)
           }
