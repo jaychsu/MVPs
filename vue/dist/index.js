@@ -7870,16 +7870,21 @@ const NULL_FN = () => {};
       type: String,
       required: true
     },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    onChange: {
+      type: Function,
+      default: NULL_FN
+    },
+
     optionDataList: {
       type: Array,
       required: true,
       default() {
         return [OptionData];
       }
-    },
-    placeholder: {
-      type: String,
-      default: ''
     },
     selectedOptionData: {
       type: Object,
@@ -7890,15 +7895,13 @@ const NULL_FN = () => {};
     isPanelVisible: {
       type: Boolean,
       default: false
-    },
-    onChange: {
-      type: Function,
-      default: NULL_FN
     }
   },
   data() {
     return {
-      pri_isPanelVisible: this.isPanelVisible
+      optionDataList_: this.optionDataList,
+      selectedOptionData_: this.selectedOptionData,
+      isPanelVisible_: this.isPanelVisible
     };
   },
   methods: {
@@ -7907,20 +7910,20 @@ const NULL_FN = () => {};
 
       if (!optionData.display) optionData.display = optionData.id;
 
-      const prevOptionData = this.selectedOptionData;
+      const prevOptionData = this.selectedOptionData_;
       this.onChange(optionData, prevOptionData);
-      this.selectedOptionData = optionData;
+      this.selectedOptionData_ = optionData;
 
       this.togglePanel(false);
     },
     togglePanel(isPanelVisible) {
       if (typeof isPanelVisible === 'undefined') {
-        isPanelVisible = !this.pri_isPanelVisible;
+        isPanelVisible = !this.isPanelVisible_;
       } else {
         isPanelVisible = !!isPanelVisible;
       }
 
-      this.pri_isPanelVisible = isPanelVisible;
+      this.isPanelVisible_ = isPanelVisible;
     },
     handlePageEvent(event) {
       const targetClass = event.target.className;
@@ -7937,7 +7940,7 @@ const NULL_FN = () => {};
       } else {
         // toggle panel
         this.togglePanel();
-        if (this.pri_isPanelVisible) {
+        if (this.isPanelVisible_) {
           // Here is a hack to use `focus` within `setTimeout`
           setTimeout(() => this.$refs['searcher'].focus(), 0);
         }
@@ -7963,18 +7966,18 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
     ref: "container",
     staticClass: "da-selector",
     class: {
-      'is-expanded': _vm.pri_isPanelVisible
+      'is-expanded': _vm.isPanelVisible_
     }
   }, [_c('div', {
     staticClass: "da-selector-placeholder"
-  }, [_vm._v(_vm._s(_vm.selectedOptionData.display))]), _c('div', {
+  }, [_vm._v(_vm._s(_vm.selectedOptionData_.display))]), _c('div', {
     staticClass: "da-selector-search-wrap"
   }, [_c('input', {
     ref: "searcher",
     staticClass: "da-selector-search",
     attrs: {
       "type": "text",
-      "placeholder": _vm.selectedOptionData.display
+      "placeholder": _vm.selectedOptionData_.display
     }
   }), _c('span', {
     staticClass: "da-selector-search-icon"
@@ -7983,15 +7986,15 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }), _c('div', {
     staticClass: "da-selector-panel",
     class: {
-      hide: !_vm.pri_isPanelVisible
+      hide: !_vm.isPanelVisible_
     }
   }, [_c('ul', {
     staticClass: "da-selector-option-list"
-  }, _vm._l((_vm.optionDataList), function(optionData) {
+  }, _vm._l((_vm.optionDataList_), function(optionData) {
     return _c('li', {
       staticClass: "da-selector-option-item",
       class: {
-        active: optionData.id === _vm.selectedOptionData.id
+        active: optionData.id === _vm.selectedOptionData_.id
       },
       on: {
         "click": function () { return _vm.selectOption(optionData); }
