@@ -3,13 +3,13 @@
     ref="container"
     :class="{ 'is-expanded': isPanelVisible_ }"
   )
-    .da-selector-placeholder {{ selectedOptionData.display }}
+    .da-selector-placeholder {{ selectedOptionData_.display }}
 
     .da-selector-search-wrap
       input.da-selector-search(
         ref="searcher"
         type="text"
-        :placeholder="selectedOptionData.display"
+        :placeholder="selectedOptionData_.display"
       )
       span.da-selector-search-icon
 
@@ -20,8 +20,8 @@
     )
       ul.da-selector-option-list
         li.da-selector-option-item(
-          v-for="optionData in optionDataList"
-          :class="{ active: optionData.id === selectedOptionData.id }"
+          v-for="optionData in optionDataList_"
+          :class="{ active: optionData.id === selectedOptionData_.id }"
           @click="() => selectOption(optionData)"
         ) {{ optionData.display }}
 
@@ -49,16 +49,21 @@
         type: String,
         required: true,
       },
+      placeholder: {
+        type: String,
+        default: '',
+      },
+      onChange: {
+        type: Function,
+        default: NULL_FN,
+      },
+
       optionDataList: {
         type: Array,
         required: true,
         default() {
           return [ OptionData ]
         },
-      },
-      placeholder: {
-        type: String,
-        default: '',
       },
       selectedOptionData: {
         type: Object,
@@ -70,13 +75,11 @@
         type: Boolean,
         default: false,
       },
-      onChange: {
-        type: Function,
-        default: NULL_FN,
-      },
     },
     data() {
       return {
+        optionDataList_: this.optionDataList,
+        selectedOptionData_: this.selectedOptionData,
         isPanelVisible_: this.isPanelVisible,
       }
     },
@@ -86,9 +89,9 @@
 
         if (!optionData.display) optionData.display = optionData.id
 
-        const prevOptionData = this.selectedOptionData
+        const prevOptionData = this.selectedOptionData_
         this.onChange(optionData, prevOptionData)
-        this.selectedOptionData = optionData
+        this.selectedOptionData_ = optionData
 
         this.togglePanel(false)
       },
