@@ -89,8 +89,7 @@
 
         if (!optionData.display) optionData.display = optionData.id
 
-        const prevOptionData = this.selectedOptionData_
-        this.onChange(optionData, prevOptionData)
+        this.onChange(optionData, this.selectedOptionData_)
         this.selectedOptionData_ = optionData
 
         this.togglePanel(false)

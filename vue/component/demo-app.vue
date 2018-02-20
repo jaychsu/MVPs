@@ -1,10 +1,14 @@
 <template lang="pug">
-  da-selector(
-    id="demo-selector"
-    placeholder="This is yield name"
-    :optionDataList="optionDataList"
-    :onChange="onChange"
-  )
+  div
+    p
+      | Your choice is:
+      span {{ selectedOptionData.display }}
+    da-selector(
+      id="demo-selector"
+      placeholder="This is yield name"
+      :optionDataList="optionDataList"
+      :onChange="onChange"
+    )
 </template>
 
 <script>
@@ -13,10 +17,16 @@
   export default {
     components: { DaSelector },
     data() {
+      const optionDataList = getRandomData(20)
       return {
-        optionDataList: getRandomData(20),
-        onChange(newOption, oldOption) {},
+        optionDataList,
+        selectedOptionData: optionDataList[0],
       }
+    },
+    methods: {
+      onChange(newOption, oldOption) {
+        this.selectedOptionData = newOption
+      },
     },
   }
 
