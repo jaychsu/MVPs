@@ -101,6 +101,11 @@
           isPanelVisible = !!isPanelVisible
         }
 
+        if (!isPanelVisible) {
+          this.$refs['searcher'].value = ''
+          this.$refs['searcher'].dispatchEvent(new Event('keyup'))
+        }
+
         this.isPanelVisible_ = isPanelVisible
       },
       handlePageEvent(event) {
@@ -126,13 +131,35 @@
           }
         }
       },
+      handleSearcherEvent(event) {
+        const value = event.target.value
+        if (typeof value !== 'string') return false
+
+        const searchResults = this.optionDataList.filter(optionData => {
+          if (!optionData) return false
+
+          const searchYield = [
+            optionData.id || '',
+            optionData.display || ''
+          ].join('::').toLowerCase()
+
+          if (~searchYield.indexOf(value.toLowerCase())) return true
+          return false
+        })
+
+        this.optionDataList_ = (searchResults.length)
+          ? searchResults
+          : [{ id: ID_NO_RESULT, display: 'no result' }]
+      },
     },
 
     mounted() {
       window.addEventListener('click', this.handlePageEvent, false)
+      this.$refs['searcher'].addEventListener('keyup', this.handleSearcherEvent, false)
     },
     beforeDestroy() {
       window.removeEventListener('click', this.handlePageEvent, false)
+      this.$refs['searcher'].removeEventListener('keyup', this.handleSearcherEvent, false)
     },
   }
 </script>
