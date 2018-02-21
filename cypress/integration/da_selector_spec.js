@@ -1,5 +1,5 @@
 Object.entries({
-  'jquery': '/origin',
+  'jquery': '/jquery',
   'polymer': '/polymer/build/es5-bundled',
   'react': '/react/dist',
   'vue': '/vue/dist',

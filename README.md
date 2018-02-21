@@ -1,10 +1,10 @@
 da-selector
 ======
 
-- in jQuery(origin version)
-    - [repository](./origin)
-    - [component code](./origin/da-selector.js)
-    - [demo](https://jaychsu.github.io/da-selector/origin)
+- in jQuery
+    - [repository](./jquery)
+    - [component code](./jquery/da-selector.js)
+    - [demo](https://jaychsu.github.io/da-selector/jquery)
 - in Polymer
     - [repository](./polymer)
     - [component code](./polymer/src/da-selector/index.html)
