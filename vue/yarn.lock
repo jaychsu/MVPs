@@ -3494,7 +3494,7 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-template-html-loader@^1.0.0:
+template-html-loader@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/template-html-loader/-/template-html-loader-1.0.0.tgz#e3d8964a68d74e749c479467bc7bf3925866e875"
   dependencies:

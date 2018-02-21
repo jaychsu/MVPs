@@ -7723,16 +7723,26 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   components: { DaSelector: __WEBPACK_IMPORTED_MODULE_0__da_selector_vue__["a" /* default */] },
   data() {
+    const optionDataList = getRandomData(20);
     return {
-      optionDataList: getRandomData(20),
-      onChange(newOption, oldOption) {}
+      optionDataList,
+      selectedOptionData: optionDataList[0]
     };
+  },
+  methods: {
+    onChange(newOption, oldOption) {
+      this.selectedOptionData = newOption;
+    }
   }
 });
 
@@ -7910,8 +7920,7 @@ const NULL_FN = () => {};
 
       if (!optionData.display) optionData.display = optionData.id;
 
-      const prevOptionData = this.selectedOptionData_;
-      this.onChange(optionData, prevOptionData);
+      this.onChange(optionData, this.selectedOptionData_);
       this.selectedOptionData_ = optionData;
 
       this.togglePanel(false);
@@ -7921,6 +7930,11 @@ const NULL_FN = () => {};
         isPanelVisible = !this.isPanelVisible_;
       } else {
         isPanelVisible = !!isPanelVisible;
+      }
+
+      if (!isPanelVisible) {
+        this.$refs['searcher'].value = '';
+        this.$refs['searcher'].dispatchEvent(new Event('keyup'));
       }
 
       this.isPanelVisible_ = isPanelVisible;
@@ -7945,14 +7959,31 @@ const NULL_FN = () => {};
           setTimeout(() => this.$refs['searcher'].focus(), 0);
         }
       }
+    },
+    handleSearcherEvent(event) {
+      const value = event.target.value;
+      if (typeof value !== 'string') return false;
+
+      const searchResults = this.optionDataList.filter(optionData => {
+        if (!optionData) return false;
+
+        const searchYield = [optionData.id || '', optionData.display || ''].join('::').toLowerCase();
+
+        if (~searchYield.indexOf(value.toLowerCase())) return true;
+        return false;
+      });
+
+      this.optionDataList_ = searchResults.length ? searchResults : [{ id: ID_NO_RESULT, display: 'no result' }];
     }
   },
 
   mounted() {
     window.addEventListener('click', this.handlePageEvent, false);
+    this.$refs['searcher'].addEventListener('keyup', this.handleSearcherEvent, false);
   },
   beforeDestroy() {
     window.removeEventListener('click', this.handlePageEvent, false);
+    this.$refs['searcher'].removeEventListener('keyup', this.handleSearcherEvent, false);
   }
 });
 
@@ -8028,14 +8059,14 @@ if (false) {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('da-selector', {
+  return _c('div', [_c('p', [_vm._v("Your choice is:"), _c('span', [_vm._v(_vm._s(_vm.selectedOptionData.display))])]), _c('da-selector', {
     attrs: {
       "id": "demo-selector",
       "placeholder": "This is yield name",
       "optionDataList": _vm.optionDataList,
       "onChange": _vm.onChange
     }
-  })
+  })], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
