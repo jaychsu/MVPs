@@ -1,0 +1,22 @@
+{
+  "name": "test-da-selector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "cypress:open": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaychsu/da-selector.git"
+  },
+  "author": "Jaych Su",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaychsu/da-selector/issues"
+  },
+  "homepage": "https://github.com/jaychsu/da-selector#readme",
+  "devDependencies": {
+    "cypress": "^2.0.2"
+  }
+}
