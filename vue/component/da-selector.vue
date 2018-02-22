@@ -152,7 +152,7 @@
           ].join('::').toLowerCase()
 
           if (~searchYield.indexOf(value.toLowerCase())) return true
-          return false
+          else return false
         })
 
         this.optionDataList_ = (searchResults.length)

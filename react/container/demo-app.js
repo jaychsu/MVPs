@@ -8,18 +8,27 @@ class DemoApp extends Component {
     super(props)
 
     this.state = {
+      optionDataList: this.getRandomData(20),
       selectOption: {},
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // to avoid `this.state.optionDataList` get random every time
+    return this.state.selectOption != nextState.selectOption
   }
 
   render() {
     return (
       <div>
-        <p>Your choice is: <span>{this.state.selectOption.display}</span></p>
+        <p>Your choice is:
+          <span id="user-choice">{this.state.selectOption.display}</span>
+        </p>
         <DaSelector
           id="demo-selector"
-          optionDataList={this.getRandomData(20)}
-          placeholder="This is yield name"
+          name="input name"
+          placeholder="input placeholder"
+          optionDataList={this.state.optionDataList}
           onChange={(newOption, oldOption) => {
             this.setState({
               selectOption: newOption,
@@ -31,15 +40,12 @@ class DemoApp extends Component {
   }
 
   getRandomData(length) {
-    let result = []
-      , i
-
-    result.push({
-      id: 'id-0',
+    const result = [{
+      id: '',
       display: 'Please select an option',
-    })
+    }]
 
-    for (i = 1; i < length; i++) {
+    for (let i = 1; i < length; i++) {
       result.push({
         id: `id-${i}`,
         display: `${i} - ${Math.random().toString(16).slice(2)}`,

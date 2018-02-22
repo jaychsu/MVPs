@@ -2,7 +2,7 @@
   div
     p
       | Your choice is:
-      span#user-choice {{ selectedOptionData.display }}
+      span#user-choice {{ selectOption.display }}
     da-selector(
       id="demo-selector"
       name="input name"
@@ -21,12 +21,12 @@
       const optionDataList = getRandomData(20)
       return {
         optionDataList,
-        selectedOptionData: optionDataList[0],
+        selectOption: {},
       }
     },
     methods: {
       onChange(newOption, oldOption) {
-        this.selectedOptionData = newOption
+        this.selectOption = newOption
       },
     },
   }

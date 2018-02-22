@@ -10,37 +10,37 @@ const OptionData = PropTypes.shape({
   display: PropTypes.string,
 })
 
-const NULL_FN = () => {}
-
-// To expose method to `togglePanel`, just refer commit `44059e28952b7ee70454cc6b7b2d7945bc3d29bd`
+// To expose method to `togglePanel` by event, just refer commit `44059e28952b7ee70454cc6b7b2d7945bc3d29bd`
 class DaSelector extends Component {
-  static idNoResult = 'no-result';
-
-  static classSet = {
+  static CLS_SET = {
     main: 'da-selector',
+
     panel: 'da-selector-panel',
     list: 'da-selector-option-list',
     item: 'da-selector-option-item',
+
     searchWrap: 'da-selector-search-wrap',
     searchIcon: 'da-selector-search-icon',
     search: 'da-selector-search',
+
     placeholder: 'da-selector-placeholder',
     triangle: 'da-selector-triangle',
   };
 
   static propTypes = {
     id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     optionDataList: PropTypes.arrayOf(OptionData).isRequired,
     placeholder: PropTypes.string,
+    onChange: PropTypes.func,
     selectedOptionData: OptionData,
     isPanelVisible: PropTypes.bool,
-    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     placeholder: '',
     isPanelVisible: false,
-    onChange: NULL_FN,
+    onChange: () => {},
   };
 
   constructor(props) {
@@ -54,8 +54,6 @@ class DaSelector extends Component {
   }
 
   componentDidMount() {
-    this.selectOption(this.props.optionDataList[0])
-
     window.addEventListener('click', this.handlePageEvent, false)
     this.searcher.addEventListener('keyup', this.handleSearcherEvent, false)
   }
@@ -66,40 +64,41 @@ class DaSelector extends Component {
   }
 
   render() {
-    const classSet = DaSelector.classSet
+    const CLS_SET = DaSelector.CLS_SET
 
     return (
-      <div className={clas(classSet.main, {
+      <div className={clas(CLS_SET.main, {
           'is-expanded': this.state.isPanelVisible,
         })}
       >
-        <div className={classSet.placeholder}>
+        <div className={CLS_SET.placeholder}>
           { this.state.selectedOptionData.display }
         </div>
 
-        <div className={classSet.searchWrap}>
+        <div className={CLS_SET.searchWrap}>
           <input
-            className={classSet.search}
+            className={CLS_SET.search}
             type="text"
             placeholder={this.state.selectedOptionData.display}
             ref={input => this.searcher = input}
           />
-          <span className={classSet.searchIcon}></span>
+          <span className={CLS_SET.searchIcon}></span>
         </div>
 
-        <span className={classSet.triangle}></span>
+        <span className={CLS_SET.triangle}></span>
 
-        <div className={clas(classSet.panel, {
+        <div className={clas(CLS_SET.panel, {
             'hide': !this.state.isPanelVisible,
           })}
         >
-          <ul className={classSet.list}>
+          <ul className={CLS_SET.list}>
             { this.state.optionDataList.map(optionData => (
                 <li
                   key={optionData.id}
-                  className={clas(classSet.item, {
+                  className={clas(CLS_SET.item, {
                     'active': optionData.id === this.state.selectedOptionData.id,
                   })}
+                  data-optid={optionData.id}
                   onClick={() => this.selectOption(optionData)}
                 >
                   { optionData.display }
@@ -111,18 +110,27 @@ class DaSelector extends Component {
         <label htmlFor={this.props.id}>
           { this.props.placeholder }
         </label>
-        <input id={this.props.id} type="hidden" />
+        <input
+          type="hidden"
+          id={this.props.id}
+          name={this.props.name}
+          data-opt={this.state.selectedOptionData.display}
+          value={this.state.selectedOptionData.id}
+        />
       </div>
     )
   }
 
   selectOption(optionData) {
-    if (optionData.id === DaSelector.idNoResult) return false
+    // switch (optionData.id)
+    // null -> invalid
+    // '' -> empty but valid
+    // 'any' -> valid
+    if (optionData.id === null) return false
 
     if (!optionData.display) optionData.display = optionData.id
 
-    const prevOptionData = this.state.selectedOptionData
-    this.props.onChange(optionData, prevOptionData)
+    this.props.onChange(optionData, this.state.selectedOptionData)
 
     this.setState({
       selectedOptionData: optionData,
@@ -132,10 +140,15 @@ class DaSelector extends Component {
   }
 
   togglePanel(isPanelVisible) {
-    if (typeof isPanelVisible === 'undefined') {
+    if (isPanelVisible === undefined) {
       isPanelVisible = !this.state.isPanelVisible
     } else {
       isPanelVisible = !!isPanelVisible
+    }
+
+    if (!isPanelVisible) {
+      this.searcher.value = ''
+      this.searcher.dispatchEvent(new Event('keyup'))
     }
 
     this.setState({ isPanelVisible })
@@ -143,23 +156,21 @@ class DaSelector extends Component {
 
   handlePageEvent = event => {
     const targetClass = event.target.className
-    const isOutsideComponent = !event.path.find(path => path.className === DaSelector.classSet.main)
-    const needNoResponse =
-      targetClass.indexOf('da-selector-option') > -1
-      || targetClass.indexOf('da-selector-search') > -1
+    const needNoResponse = (
+      ~targetClass.indexOf('da-selector-option') ||
+      ~targetClass.indexOf('da-selector-search')
+    )
+    const isOutsideComponent = !event.path.find(path => path.className === DaSelector.CLS_SET.main)
 
     if (needNoResponse) {
-      // need no response
       return false
     } else if (isOutsideComponent) {
-      // outside component
       this.togglePanel(false)
       return false
-    } else {
-      // toggle panel
-      this.togglePanel()
-      if (this.state.isPanelVisible) this.searcher.focus()
     }
+
+    this.togglePanel()
+    if (this.state.isPanelVisible) this.searcher.focus()
   };
 
   handleSearcherEvent = event => {
@@ -168,20 +179,20 @@ class DaSelector extends Component {
 
     let searchResults = this.props.optionDataList.filter(optionData => {
       if (!optionData) return false
+
       const searchYield = [
         optionData.id || '',
         optionData.display || ''
-      ].join('::')
-      if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
-      return false
+      ].join('::').toLowerCase()
+
+      if (~searchYield.indexOf(value.toLowerCase())) return true
+      else return false
     })
 
-    searchResults = (searchResults.length > 0)
-      ? searchResults
-      : [{ id: DaSelector.idNoResult, display: 'no result' }]
-
     this.setState({
-      optionDataList: searchResults,
+      optionDataList: (searchResults.length)
+        ? searchResults
+        : [{ id: null, display: 'no result' }],
     })
   };
 }
