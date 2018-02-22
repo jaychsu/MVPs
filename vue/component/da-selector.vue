@@ -22,6 +22,7 @@
         li.da-selector-option-item(
           v-for="optionData in optionDataList_"
           :class="{ active: optionData.id === selectedOptionData_.id }"
+          :data-optid="optionData.id"
           @click="() => selectOption(optionData)"
         ) {{ optionData.display }}
 
@@ -31,21 +32,20 @@
     input(
       type="hidden"
       :id="id"
+      :name="name"
+      :data-opt="selectedOptionData_.display"
+      v-model="selectedOptionData_.id"
     )
 </template>
 
 <script>
-  const OptionData = {
-    id: '',
-    display: '',
-  }
-
-  const ID_NO_RESULT = 'no-result'
-  const NULL_FN = () => {}
-
   export default {
     props: {
       id: {
+        type: String,
+        required: true,
+      },
+      name: {
         type: String,
         required: true,
       },
@@ -55,14 +55,17 @@
       },
       onChange: {
         type: Function,
-        default: NULL_FN,
+        default: () => {},
       },
 
       optionDataList: {
         type: Array,
         required: true,
         default() {
-          return [ OptionData ]
+          return [{
+            id: null,
+            display: '',
+          }]
         },
       },
       selectedOptionData: {
@@ -85,7 +88,11 @@
     },
     methods: {
       selectOption(optionData) {
-        if (optionData.id === ID_NO_RESULT) return false
+        // switch (optionData.id)
+        // null -> invalid
+        // '' -> empty but valid
+        // 'any' -> valid
+        if (optionData.id === null) return false
 
         if (!optionData.display) optionData.display = optionData.id
 
@@ -94,8 +101,9 @@
 
         this.togglePanel(false)
       },
+
       togglePanel(isPanelVisible) {
-        if (typeof isPanelVisible === 'undefined') {
+        if (isPanelVisible === undefined) {
           isPanelVisible = !this.isPanelVisible_
         } else {
           isPanelVisible = !!isPanelVisible
@@ -108,29 +116,29 @@
 
         this.isPanelVisible_ = isPanelVisible
       },
+
       handlePageEvent(event) {
         const targetClass = event.target.className
+        const needNoResponse = (
+          ~targetClass.indexOf('da-selector-option') ||
+          ~targetClass.indexOf('da-selector-search')
+        )
         const isOutsideComponent = !this.$refs['container'].contains(event.target)
-        const needNoResponse =
-          targetClass.indexOf('da-selector-option') > -1
-          || targetClass.indexOf('da-selector-search') > -1
 
         if (needNoResponse) {
-          // need no response
           return false
         } else if (isOutsideComponent) {
-          // outside component
           this.togglePanel(false)
           return false
-        } else {
-          // toggle panel
-          this.togglePanel()
-          if (this.isPanelVisible_) {
-            // Here is a hack to use `focus` within `setTimeout`
-            setTimeout(() => this.$refs['searcher'].focus(), 0)
-          }
+        }
+
+        this.togglePanel()
+        if (this.isPanelVisible_) {
+          // Here is a hack to use `focus` within `setTimeout`
+          setTimeout(() => this.$refs['searcher'].focus(), 0)
         }
       },
+
       handleSearcherEvent(event) {
         const value = event.target.value
         if (typeof value !== 'string') return false
@@ -149,7 +157,7 @@
 
         this.optionDataList_ = (searchResults.length)
           ? searchResults
-          : [{ id: ID_NO_RESULT, display: 'no result' }]
+          : [{ id: null, display: 'no result' }]
       },
     },
 
