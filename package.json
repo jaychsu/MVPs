@@ -4,6 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
+    "build": "bash ./build.sh",
     "cypress:open": "cypress open"
   },
   "repository": {
