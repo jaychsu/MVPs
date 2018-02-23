@@ -22448,9 +22448,10 @@ var DemoApp = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (DemoApp.__proto__ || Object.getPrototypeOf(DemoApp)).call(this, props));
 
+    var optionDataList = _this.getRandomData(20);
     _this.state = {
-      optionDataList: _this.getRandomData(20),
-      selectOption: {}
+      optionDataList: optionDataList,
+      selectOption: optionDataList[0]
     };
     return _this;
   }

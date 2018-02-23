@@ -7737,7 +7737,7 @@ if (false) {(function () {
     const optionDataList = getRandomData(20);
     return {
       optionDataList,
-      selectOption: {}
+      selectOption: optionDataList[0]
     };
   },
   methods: {
