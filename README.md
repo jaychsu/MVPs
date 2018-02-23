@@ -1,6 +1,8 @@
 da-selector
 ======
 
+[![Build Status](https://travis-ci.org/jaychsu/da-selector.svg?branch=master)](https://travis-ci.org/jaychsu/da-selector)
+
 - in jQuery
     - [repository](./jquery)
     - [component code](./jquery/da-selector.js)

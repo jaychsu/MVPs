@@ -7,9 +7,10 @@ class DemoApp extends Component {
   constructor(props) {
     super(props)
 
+    const optionDataList = this.getRandomData(20)
     this.state = {
-      optionDataList: this.getRandomData(20),
-      selectOption: {},
+      optionDataList,
+      selectOption: optionDataList[0],
     }
   }
 
