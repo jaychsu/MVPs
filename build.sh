@@ -31,7 +31,7 @@ rm -rf node_modules
 yarn install
 npm run build
 
-if build_polymer = true; then
+if $build_polymer = true; then
   cd $ROOT_DIR/polymer
   rm -rf bower_components
   bower install
