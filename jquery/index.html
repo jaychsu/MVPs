@@ -33,35 +33,33 @@
   <body>
     <p>Your choice is: <span id="user-choice"></span></p>
 
-    <div id="demo-selector"></div>
+    <div id="demo-1"></div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="da-selector.js"></script>
     <script type="text/javascript">
       $(function () {
-        var SelectorHandler = $('#demo-selector').initDaSelector({
+        var SelectorHandler = $('#demo-1').initDaSelector({
           needSearcher: true,
           isTriangleShown: true,
-          placeholder: 'This is yield name',
-          inputID: 'value-storage',
+          placeholder: 'input placeholder',
+          inputId: 'demo-selector',
+          inputName: 'input name',
           optionDataList: getRandomData(20),
           onChange: function (newValue, oldValue) {
-            var displayValue = $('#demo-selector').find('[data-value="'+newValue+'"]').attr('title')
+            var displayValue = $('#demo-1').find('[data-optid="'+ newValue +'"]').text()
             $('#user-choice').text(displayValue)
           },
         })
       })
 
       function getRandomData(length) {
-        var result = []
-          , i
-
-        result.push({
-          id: 'id-0',
+        var result = [{
+          id: '',
           display: 'Please select an option',
-        })
+        }]
 
-        for (i = 1; i < length; i++) {
+        for (var i = 1; i < length; i++) {
           result.push({
             id: `id-${i}`,
             display: `${i} - ${Math.random().toString(16).slice(2)}`,

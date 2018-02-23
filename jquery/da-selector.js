@@ -20,16 +20,14 @@
     'triangle': 'da-selector-triangle'
   }
 
-  var NULL_FN = function () {}
-  var idNoResult = 'no-result'
-
   $.fn.initDaSelector = function (cfg) {
     var $target = this
     var config = $.extend({
       'needSearcher': false,
       'isTriangleShown': true,
       'placeholder': '',
-      'inputID': '',
+      'inputId': '',
+      'inputName': '',
       'inputClassNames': '',
 
       /**
@@ -43,11 +41,11 @@
       'optionDataList': [],
 
       // callback
-      'onChange': NULL_FN, // params: newValue, oldValue
+      'onChange': function () {}, // params: newValue, oldValue
     }, cfg)
 
-    if (!config.inputID) {
-      console.error('[ERROR] failed to initialize '+ $target.selector)
+    if (!config.inputId) {
+      throw new Error('[ERROR] failed to initialize '+ $target.selector)
       return null
     }
 
@@ -90,7 +88,7 @@
     var selectorValue = null
 
     $target.on('toggle-panel', function (e, isOpen) {
-      if (typeof isOpen === 'undefined') {
+      if (isOpen === undefined) {
         isOpen = !isPanelVisible
       } else {
         isOpen = !!isOpen
@@ -106,7 +104,7 @@
     // }, false)
 
     $body.on('click', function (e) {
-      if ((e.target.className || '').indexOf(classSet.search) > -1) return false
+      if (~(e.target.className || '').indexOf(classSet.search)) return false
 
       var $elem = $(e.target)
       var isInScope = $target.attr('id') === $elem.attr('id') || $target.find(e.target).length > 0
@@ -121,15 +119,14 @@
     })
 
     $body.on('click', targetSelector+' .'+classSet.item, function (e) {
-      var $this = $(this)
-      var value = $this.data('value')
+      var value = $(this).data('optid')
 
-      if (value === idNoResult) return false
+      if (value === null) return false
 
       _setValue($target, config, value)
     })
 
-    $body.on('change', '#'+config.inputID, function (event) {
+    $body.on('change', '#'+config.inputId, function (event) {
       var value = event.target.value
       config.onChange(value, selectorValue)
       selectorValue = value
@@ -148,11 +145,12 @@
         if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
       })
 
-      searchResults = (searchResults.length > 0)
-        ? searchResults
-        : [{ id: idNoResult, display: 'no result' }]
-
-      _updateOptionList($target, searchResults)
+      _updateOptionList(
+        $target,
+        (searchResults.length)
+          ? searchResults
+          : [{ id: null, display: 'no result' }]
+      )
     })
   }
 
@@ -185,8 +183,8 @@
       searcher,
       triangle,
       generateOptionList(config.optionDataList),
-      '<label for="'+ config.inputID +'">'+ config.placeholder +'</label>',
-      '<input class="'+ config.inputClassNames +'" id="'+ config.inputID +'" type="hidden" />'
+      '<label for="'+ config.inputId +'">'+ config.placeholder +'</label>',
+      '<input class="'+ config.inputClassNames +'" id="'+ config.inputId +'" name="'+ config.inputName +'" type="hidden" />'
     ].join('')
   }
 
@@ -211,8 +209,7 @@
       return [
         '<li ',
           'class="'+ classSet.item +'" ',
-          'data-value="'+ optionData.id +'" ',
-          'title="'+ display +'" ',
+          'data-optid="'+ optionData.id +'" ',
         '>',
           display,
         '</li>'
@@ -222,13 +219,13 @@
 
   function _setValue($target, config, value) {
     var $options = $target.find('.'+classSet.item)
-    var $selectedOption = $options.closest('[data-value="'+ value +'"]')
+    var $selectedOption = $options.closest('[data-optid="'+ value +'"]')
 
-    if ($selectedOption.length < 1) return false
+    if (!$selectedOption.length) return false
 
-    var $input = $('#'+config.inputID)
+    var $input = $('#'+config.inputId)
     var display = $selectedOption.text().trim()
-    $input.attr('title', display).val(value).trigger('change')
+    $input.attr('data-opt', display).val(value).trigger('change')
     $target.find('.'+classSet.placeholder).text(display)
     config.needSearcher && $target.find('.'+classSet.search).attr('placeholder', display)
 
@@ -239,7 +236,7 @@
   }
 
   function _getValue($target, config) {
-    return $('#'+config.inputID).val()
+    return $('#'+config.inputId).val()
   }
 
   function _updateOptionList($target, optionDataList) {
