@@ -22449,12 +22449,18 @@ var DemoApp = function (_Component) {
     var _this = _possibleConstructorReturn(this, (DemoApp.__proto__ || Object.getPrototypeOf(DemoApp)).call(this, props));
 
     _this.state = {
+      optionDataList: _this.getRandomData(20),
       selectOption: {}
     };
     return _this;
   }
 
   _createClass(DemoApp, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      return this.state.selectOption != nextState.selectOption;
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -22465,17 +22471,18 @@ var DemoApp = function (_Component) {
         _react2.default.createElement(
           'p',
           null,
-          'Your choice is: ',
+          'Your choice is:',
           _react2.default.createElement(
             'span',
-            null,
+            { id: 'user-choice' },
             this.state.selectOption.display
           )
         ),
         _react2.default.createElement(_daSelector2.default, {
           id: 'demo-selector',
-          optionDataList: this.getRandomData(20),
-          placeholder: 'This is yield name',
+          name: 'input name',
+          placeholder: 'input placeholder',
+          optionDataList: this.state.optionDataList,
           onChange: function onChange(newOption, oldOption) {
             _this2.setState({
               selectOption: newOption
@@ -22487,15 +22494,12 @@ var DemoApp = function (_Component) {
   }, {
     key: 'getRandomData',
     value: function getRandomData(length) {
-      var result = [],
-          i = void 0;
-
-      result.push({
-        id: 'id-0',
+      var result = [{
+        id: '',
         display: 'Please select an option'
-      });
+      }];
 
-      for (i = 1; i < length; i++) {
+      for (var i = 1; i < length; i++) {
         result.push({
           id: 'id-' + i,
           display: i + ' - ' + Math.random().toString(16).slice(2)
@@ -22553,8 +22557,6 @@ var OptionData = _react.PropTypes.shape({
   display: _react.PropTypes.string
 });
 
-var NULL_FN = function NULL_FN() {};
-
 var DaSelector = function (_Component) {
   _inherits(DaSelector, _Component);
 
@@ -22565,20 +22567,20 @@ var DaSelector = function (_Component) {
 
     _this.handlePageEvent = function (event) {
       var targetClass = event.target.className;
+      var needNoResponse = ~targetClass.indexOf('da-selector-option') || ~targetClass.indexOf('da-selector-search');
       var isOutsideComponent = !event.path.find(function (path) {
-        return path.className === DaSelector.classSet.main;
+        return path.className === DaSelector.CLS_SET.main;
       });
-      var needNoResponse = targetClass.indexOf('da-selector-option') > -1 || targetClass.indexOf('da-selector-search') > -1;
 
       if (needNoResponse) {
         return false;
       } else if (isOutsideComponent) {
         _this.togglePanel(false);
         return false;
-      } else {
-        _this.togglePanel();
-        if (_this.state.isPanelVisible) _this.searcher.focus();
       }
+
+      _this.togglePanel();
+      if (_this.state.isPanelVisible) _this.searcher.focus();
     };
 
     _this.handleSearcherEvent = function (event) {
@@ -22587,15 +22589,14 @@ var DaSelector = function (_Component) {
 
       var searchResults = _this.props.optionDataList.filter(function (optionData) {
         if (!optionData) return false;
-        var searchYield = [optionData.id || '', optionData.display || ''].join('::');
-        if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true;
-        return false;
+
+        var searchYield = [optionData.id || '', optionData.display || ''].join('::').toLowerCase();
+
+        if (~searchYield.indexOf(value.toLowerCase())) return true;else return false;
       });
 
-      searchResults = searchResults.length > 0 ? searchResults : [{ id: DaSelector.idNoResult, display: 'no result' }];
-
       _this.setState({
-        optionDataList: searchResults
+        optionDataList: searchResults.length ? searchResults : [{ id: null, display: 'no result' }]
       });
     };
 
@@ -22604,15 +22605,13 @@ var DaSelector = function (_Component) {
       selectedOptionData: props.selectedOptionData || props.optionDataList[0],
       isPanelVisible: props.isPanelVisible
     };
-
-    window.addEventListener('click', _this.handlePageEvent, false);
     return _this;
   }
 
   _createClass(DaSelector, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.selectOption(this.props.optionDataList[0]);
+      window.addEventListener('click', this.handlePageEvent, false);
       this.searcher.addEventListener('keyup', this.handleSearcherEvent, false);
     }
   }, {
@@ -22626,50 +22625,51 @@ var DaSelector = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var classSet = DaSelector.classSet;
+      var CLS_SET = DaSelector.CLS_SET;
 
       return _react2.default.createElement(
         'div',
-        { className: (0, _classnames2.default)(classSet.main, {
+        { className: (0, _classnames2.default)(CLS_SET.main, {
             'is-expanded': this.state.isPanelVisible
           })
         },
         _react2.default.createElement(
           'div',
-          { className: classSet.placeholder },
+          { className: CLS_SET.placeholder },
           this.state.selectedOptionData.display
         ),
         _react2.default.createElement(
           'div',
-          { className: classSet.searchWrap },
+          { className: CLS_SET.searchWrap },
           _react2.default.createElement('input', {
-            className: classSet.search,
+            className: CLS_SET.search,
             type: 'text',
             placeholder: this.state.selectedOptionData.display,
             ref: function ref(input) {
               return _this2.searcher = input;
             }
           }),
-          _react2.default.createElement('span', { className: classSet.searchIcon })
+          _react2.default.createElement('span', { className: CLS_SET.searchIcon })
         ),
-        _react2.default.createElement('span', { className: classSet.triangle }),
+        _react2.default.createElement('span', { className: CLS_SET.triangle }),
         _react2.default.createElement(
           'div',
-          { className: (0, _classnames2.default)(classSet.panel, {
+          { className: (0, _classnames2.default)(CLS_SET.panel, {
               'hide': !this.state.isPanelVisible
             })
           },
           _react2.default.createElement(
             'ul',
-            { className: classSet.list },
+            { className: CLS_SET.list },
             this.state.optionDataList.map(function (optionData) {
               return _react2.default.createElement(
                 'li',
                 {
                   key: optionData.id,
-                  className: (0, _classnames2.default)(classSet.item, {
+                  className: (0, _classnames2.default)(CLS_SET.item, {
                     'active': optionData.id === _this2.state.selectedOptionData.id
                   }),
+                  'data-optid': optionData.id,
                   onClick: function onClick() {
                     return _this2.selectOption(optionData);
                   }
@@ -22684,18 +22684,23 @@ var DaSelector = function (_Component) {
           { htmlFor: this.props.id },
           this.props.placeholder
         ),
-        _react2.default.createElement('input', { id: this.props.id, type: 'hidden' })
+        _react2.default.createElement('input', {
+          type: 'hidden',
+          id: this.props.id,
+          name: this.props.name,
+          'data-opt': this.state.selectedOptionData.display,
+          value: this.state.selectedOptionData.id
+        })
       );
     }
   }, {
     key: 'selectOption',
     value: function selectOption(optionData) {
-      if (optionData.id === DaSelector.idNoResult) return false;
+      if (optionData.id === null) return false;
 
       if (!optionData.display) optionData.display = optionData.id;
 
-      var prevOptionData = this.state.selectedOptionData;
-      this.props.onChange(optionData, prevOptionData);
+      this.props.onChange(optionData, this.state.selectedOptionData);
 
       this.setState({
         selectedOptionData: optionData
@@ -22706,10 +22711,15 @@ var DaSelector = function (_Component) {
   }, {
     key: 'togglePanel',
     value: function togglePanel(isPanelVisible) {
-      if (typeof isPanelVisible === 'undefined') {
+      if (isPanelVisible === undefined) {
         isPanelVisible = !this.state.isPanelVisible;
       } else {
         isPanelVisible = !!isPanelVisible;
+      }
+
+      if (!isPanelVisible) {
+        this.searcher.value = '';
+        this.searcher.dispatchEvent(new Event('keyup'));
       }
 
       this.setState({ isPanelVisible: isPanelVisible });
@@ -22719,30 +22729,33 @@ var DaSelector = function (_Component) {
   return DaSelector;
 }(_react.Component);
 
-DaSelector.idNoResult = 'no-result';
-DaSelector.classSet = {
+DaSelector.CLS_SET = {
   main: 'da-selector',
+
   panel: 'da-selector-panel',
   list: 'da-selector-option-list',
   item: 'da-selector-option-item',
+
   searchWrap: 'da-selector-search-wrap',
   searchIcon: 'da-selector-search-icon',
   search: 'da-selector-search',
+
   placeholder: 'da-selector-placeholder',
   triangle: 'da-selector-triangle'
 };
 DaSelector.propTypes = {
   id: _react.PropTypes.string.isRequired,
+  name: _react.PropTypes.string.isRequired,
   optionDataList: _react.PropTypes.arrayOf(OptionData).isRequired,
   placeholder: _react.PropTypes.string,
+  onChange: _react.PropTypes.func,
   selectedOptionData: OptionData,
-  isPanelVisible: _react.PropTypes.bool,
-  onChange: _react.PropTypes.func
+  isPanelVisible: _react.PropTypes.bool
 };
 DaSelector.defaultProps = {
   placeholder: '',
   isPanelVisible: false,
-  onChange: NULL_FN
+  onChange: function onChange() {}
 };
 exports.default = DaSelector;
 

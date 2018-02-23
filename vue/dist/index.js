@@ -7727,6 +7727,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -7736,26 +7737,23 @@ if (false) {(function () {
     const optionDataList = getRandomData(20);
     return {
       optionDataList,
-      selectedOptionData: optionDataList[0]
+      selectOption: {}
     };
   },
   methods: {
     onChange(newOption, oldOption) {
-      this.selectedOptionData = newOption;
+      this.selectOption = newOption;
     }
   }
 });
 
 function getRandomData(length) {
-  let result = [],
-      i;
-
-  result.push({
-    id: 'id-0',
+  const result = [{
+    id: '',
     display: 'Please select an option'
-  });
+  }];
 
-  for (i = 1; i < length; i++) {
+  for (let i = 1; i < length; i++) {
     result.push({
       id: `id-${i}`,
       display: `${i} - ${Math.random().toString(16).slice(2)}`
@@ -7865,18 +7863,18 @@ if (false) {(function () {
 //
 //
 //
-
-const OptionData = {
-  id: '',
-  display: ''
-};
-
-const ID_NO_RESULT = 'no-result';
-const NULL_FN = () => {};
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: {
     id: {
+      type: String,
+      required: true
+    },
+    name: {
       type: String,
       required: true
     },
@@ -7886,14 +7884,17 @@ const NULL_FN = () => {};
     },
     onChange: {
       type: Function,
-      default: NULL_FN
+      default: () => {}
     },
 
     optionDataList: {
       type: Array,
       required: true,
       default() {
-        return [OptionData];
+        return [{
+          id: null,
+          display: ''
+        }];
       }
     },
     selectedOptionData: {
@@ -7916,7 +7917,11 @@ const NULL_FN = () => {};
   },
   methods: {
     selectOption(optionData) {
-      if (optionData.id === ID_NO_RESULT) return false;
+      // switch (optionData.id)
+      // null -> invalid
+      // '' -> empty but valid
+      // 'any' -> valid
+      if (optionData.id === null) return false;
 
       if (!optionData.display) optionData.display = optionData.id;
 
@@ -7925,8 +7930,9 @@ const NULL_FN = () => {};
 
       this.togglePanel(false);
     },
+
     togglePanel(isPanelVisible) {
-      if (typeof isPanelVisible === 'undefined') {
+      if (isPanelVisible === undefined) {
         isPanelVisible = !this.isPanelVisible_;
       } else {
         isPanelVisible = !!isPanelVisible;
@@ -7939,27 +7945,26 @@ const NULL_FN = () => {};
 
       this.isPanelVisible_ = isPanelVisible;
     },
+
     handlePageEvent(event) {
       const targetClass = event.target.className;
+      const needNoResponse = ~targetClass.indexOf('da-selector-option') || ~targetClass.indexOf('da-selector-search');
       const isOutsideComponent = !this.$refs['container'].contains(event.target);
-      const needNoResponse = targetClass.indexOf('da-selector-option') > -1 || targetClass.indexOf('da-selector-search') > -1;
 
       if (needNoResponse) {
-        // need no response
         return false;
       } else if (isOutsideComponent) {
-        // outside component
         this.togglePanel(false);
         return false;
-      } else {
-        // toggle panel
-        this.togglePanel();
-        if (this.isPanelVisible_) {
-          // Here is a hack to use `focus` within `setTimeout`
-          setTimeout(() => this.$refs['searcher'].focus(), 0);
-        }
+      }
+
+      this.togglePanel();
+      if (this.isPanelVisible_) {
+        // Here is a hack to use `focus` within `setTimeout`
+        setTimeout(() => this.$refs['searcher'].focus(), 0);
       }
     },
+
     handleSearcherEvent(event) {
       const value = event.target.value;
       if (typeof value !== 'string') return false;
@@ -7969,11 +7974,10 @@ const NULL_FN = () => {};
 
         const searchYield = [optionData.id || '', optionData.display || ''].join('::').toLowerCase();
 
-        if (~searchYield.indexOf(value.toLowerCase())) return true;
-        return false;
+        if (~searchYield.indexOf(value.toLowerCase())) return true;else return false;
       });
 
-      this.optionDataList_ = searchResults.length ? searchResults : [{ id: ID_NO_RESULT, display: 'no result' }];
+      this.optionDataList_ = searchResults.length ? searchResults : [{ id: null, display: 'no result' }];
     }
   },
 
@@ -8027,6 +8031,9 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       class: {
         active: optionData.id === _vm.selectedOptionData_.id
       },
+      attrs: {
+        "data-optid": optionData.id
+      },
       on: {
         "click": function () { return _vm.selectOption(optionData); }
       }
@@ -8036,9 +8043,26 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       "for": _vm.id
     }
   }, [_vm._v(_vm._s(_vm.placeholder))]), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selectedOptionData_.id),
+      expression: "selectedOptionData_.id"
+    }],
     attrs: {
       "type": "hidden",
-      "id": _vm.id
+      "id": _vm.id,
+      "name": _vm.name,
+      "data-opt": _vm.selectedOptionData_.display
+    },
+    domProps: {
+      "value": (_vm.selectedOptionData_.id)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selectedOptionData_.id = $event.target.value
+      }
     }
   })])
 }
@@ -8059,10 +8083,15 @@ if (false) {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('p', [_vm._v("Your choice is:"), _c('span', [_vm._v(_vm._s(_vm.selectedOptionData.display))])]), _c('da-selector', {
+  return _c('div', [_c('p', [_vm._v("Your choice is:"), _c('span', {
+    attrs: {
+      "id": "user-choice"
+    }
+  }, [_vm._v(_vm._s(_vm.selectOption.display))])]), _c('da-selector', {
     attrs: {
       "id": "demo-selector",
-      "placeholder": "This is yield name",
+      "name": "input name",
+      "placeholder": "input placeholder",
       "optionDataList": _vm.optionDataList,
       "onChange": _vm.onChange
     }
