@@ -22,7 +22,9 @@ Object.entries({
   react: '/react/dist',
   vue: '/vue/dist',
   jquery: '/jquery',
-  polymer: '/polymer/build/es5-bundled',
+  // TODO: integrate polymer test into this file
+  // the bottleneck is that need to consider shadow root
+  // polymer: '/polymer/build/es5-bundled',
 }).forEach(([FRAMEWORK, PATH]) => {
 
 describe(`Test da-selector in ${FRAMEWORK}`, function () {

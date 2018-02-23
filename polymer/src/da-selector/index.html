@@ -18,28 +18,29 @@
     </style>
 
     <div
-      class$="[[getPanelClassList(classSet.main, isPanelVisible)]]"
+      class$="[[getPanelClassList(CLS_SET.main, isPanelVisible)]]"
       on-click="onSelectorClick"
     >
-      <div class$="[[classSet.placeholder]]">[[selectedOptionData.display]]</div>
+      <div class$="[[CLS_SET.placeholder]]">[[selectedOptionData.display]]</div>
 
-      <div class$="[[classSet.searchWrap]]">
+      <div class$="[[CLS_SET.searchWrap]]">
         <input
-          class$="[[classSet.search]]"
+          class$="[[CLS_SET.search]]"
           id="da-selector-searcher"
           type="text"
           placeholder="[[selectedOptionData.display]]"
         />
-        <span class$="[[classSet.searchIcon]]"></span>
+        <span class$="[[CLS_SET.searchIcon]]"></span>
       </div>
 
-      <span class$="[[classSet.triangle]]"></span>
+      <span class$="[[CLS_SET.triangle]]"></span>
 
-      <div class$="[[classSet.panel]]" hidden$="[[!isPanelVisible]]">
-        <ul class$="[[classSet.list]]">
+      <div class$="[[CLS_SET.panel]]" hidden$="[[!isPanelVisible]]">
+        <ul class$="[[CLS_SET.list]]">
           <template is="dom-repeat" items="{{optionDataList}}">
             <li
-              class$="[[getOptionClassList(classSet.item, selectedOptionData.id, item.id)]]"
+              class$="[[getOptionClassList(CLS_SET.item, selectedOptionData.id, item.id)]]"
+              data-optid$="[[item.id]]"
               on-click="onOptionClick"
             >
               [[item.display]]
@@ -51,31 +52,40 @@
       <label for$="[[id]]">
         [[placeholder]]
       </label>
-      <input type="hidden" id$="[[id]]" />
+      <input
+        type="hidden"
+        id$="[[id]]"
+        name$="[[name]]"
+        data-opt$="[[selectedOptionData.display]]"
+        value$="[[selectedOptionData.id]]"
+      />
     </div>
   </template>
 
   <script>
     class DaSelector extends Polymer.Element {
       static get is() { return 'da-selector' }
-      static get classSet() {
+      static get CLS_SET() {
         return {
           main: 'da-selector',
+
           panel: 'da-selector-panel',
           list: 'da-selector-option-list',
           item: 'da-selector-option-item',
+
           searchWrap: 'da-selector-search-wrap',
           searchIcon: 'da-selector-search-icon',
           search: 'da-selector-search',
+
           placeholder: 'da-selector-placeholder',
           triangle: 'da-selector-triangle',
         }
       }
-      static get idNoResult() { return 'no-result' }
       static get properties() {
         return {
           // Interface
           id: String,
+          name: String,
           placeholder: String,
           optionDataList: Array,
 
@@ -94,7 +104,7 @@
       constructor() {
         super()
 
-        this.classSet = DaSelector.classSet
+        this.CLS_SET = DaSelector.CLS_SET
       }
 
       connectedCallback() {
@@ -102,7 +112,7 @@
 
         if ( !this.optionDataList
           || !this.optionDataList[0]
-          || !this.optionDataList[0].id
+          || this.optionDataList[0].id === null
         ) throw new Error('invalid passed-in param: `optionDataList`')
 
         this.selectedOptionData = this.optionDataList[0]
@@ -117,14 +127,14 @@
             const searchYield = [
               optionData.id || '',
               optionData.display || ''
-            ].join('::')
-            if (searchYield.toLowerCase().indexOf(value.toLowerCase()) > -1) return true
+            ].join('::').toLowerCase()
+            if (~searchYield.indexOf(value.toLowerCase())) return true
             return false
           })
 
-          this.optionDataList = (searchResults.length > 0)
+          this.optionDataList = (searchResults.length)
             ? searchResults
-            : [{ id: DaSelector.idNoResult, display: 'no result' }]
+            : [{ id: null, display: 'no result' }]
         }, false)
 
         window.addEventListener('click', event => {
@@ -135,11 +145,11 @@
 
       onSelectorClick(event) {
         const targetClass = event.target.className
-        if ( targetClass.indexOf('da-selector-option') > -1
-          || targetClass.indexOf('da-selector-search') > -1
+        if ( ~targetClass.indexOf('da-selector-option')
+          || ~targetClass.indexOf('da-selector-search')
         ) return false
-        this.togglePanel()
 
+        this.togglePanel()
         if (this.isPanelVisible) this.$['da-selector-searcher'].focus()
       }
 
@@ -152,7 +162,7 @@
       onOptionClick(event) {
         const optionData = event.model.item
 
-        if (optionData.id === DaSelector.idNoResult) return false
+        if (optionData.id === null) return false
 
         if (!optionData.display) optionData.display = optionData.id
         this.selectedOptionData = optionData
@@ -167,7 +177,7 @@
       }
 
       togglePanel(isPanelVisible) {
-        if (typeof isPanelVisible === 'undefined') {
+        if (isPanelVisible === undefined) {
           this.isPanelVisible = !this.isPanelVisible
         } else {
           this.isPanelVisible = !!isPanelVisible

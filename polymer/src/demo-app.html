@@ -10,11 +10,15 @@
       }
     </style>
 
-    <p>Your choice is: [[selectedOptionData.display]]</p>
+    <p>
+      Your choice is:
+      <span id="user-choice">[[selectedOptionData.display]]</span>
+    </p>
 
     <da-selector
       id="demo-selector"
-      placeholder="This is yield name"
+      name="input name"
+      placeholder="input placeholder"
       option-data-list="{{optionDataList}}"
       selected-option-data="{{selectedOptionData}}"
     />
@@ -37,15 +41,12 @@
       }
 
       getRandomData(length) {
-        let result = []
-          , i
-
-        result.push({
-          id: 'id-0',
+        const result = [{
+          id: '',
           display: 'Please select an option',
-        })
+        }]
 
-        for (i = 1; i < length; i++) {
+        for (let i = 1; i < length; i++) {
           result.push({
             id: `id-${i}`,
             display: `${i} - ${Math.random().toString(16).slice(2)}`,
