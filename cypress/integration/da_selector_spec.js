@@ -22,6 +22,8 @@ Object.entries({
   react: '/react/dist',
   vue: '/vue/dist',
   jquery: '/jquery',
+  react_no_webpack: '/react-no-webpack',
+
   // TODO: integrate polymer test into this file
   // the bottleneck is that need to consider shadow root
   // polymer: '/polymer/build/es5-bundled',
