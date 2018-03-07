@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import './page-override.css'
+(function (ReactComponent, React, PropTypes, clas) {
 
-import DaSelector from '../component/da-selector'
 
-class DemoApp extends Component {
+const { DaSelector } = ReactComponent
+
+class DemoApp extends React.Component {
   constructor(props) {
     super(props)
 
@@ -57,4 +57,7 @@ class DemoApp extends Component {
   }
 }
 
-export default DemoApp
+window.ReactComponent = Object.assign(ReactComponent, { DemoApp })
+
+
+})(window.ReactComponent || {}, window.React, window.PropTypes, window.classNames)

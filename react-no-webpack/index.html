@@ -18,6 +18,10 @@
     <div id="demo-selector"></div>
 
     <!-- Global -->
+    <!--
+    react@15.6.2, react-dom@15.6.2, babel-core@5.8.38
+    ensures jsx could be ran in browser, no higher version
+    -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.2/react.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.6.2/react-dom.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
@@ -30,5 +34,16 @@
 
     <!-- Container -->
     <script type="text/babel" src="container/demo-app.js"></script>
+
+    <script type="text/babel">
+      (function (ReactComponent, ReactDOM) {
+        const { DemoApp } = ReactComponent
+
+        ReactDOM.render(
+          <DemoApp />,
+          document.getElementById('demo-selector')
+        )
+      })(window.ReactComponent, window.ReactDOM)
+    </script>
   </body>
 </html>

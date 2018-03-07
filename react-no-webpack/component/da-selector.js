@@ -1,9 +1,5 @@
-import React, {
-  Component,
-  PropTypes,
-} from 'react'
-import clas from 'classnames'
-import './da-selector.css'
+(function (ReactComponent, React, PropTypes, clas) {
+
 
 const OptionData = PropTypes.shape({
   id: PropTypes.string,
@@ -11,38 +7,7 @@ const OptionData = PropTypes.shape({
 })
 
 // To expose method to `togglePanel` by event, just refer commit `44059e28952b7ee70454cc6b7b2d7945bc3d29bd`
-class DaSelector extends Component {
-  static CLS_SET = {
-    main: 'da-selector',
-
-    panel: 'da-selector-panel',
-    list: 'da-selector-option-list',
-    item: 'da-selector-option-item',
-
-    searchWrap: 'da-selector-search-wrap',
-    searchIcon: 'da-selector-search-icon',
-    search: 'da-selector-search',
-
-    placeholder: 'da-selector-placeholder',
-    triangle: 'da-selector-triangle',
-  };
-
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    optionDataList: PropTypes.arrayOf(OptionData).isRequired,
-    placeholder: PropTypes.string,
-    onChange: PropTypes.func,
-    selectedOptionData: OptionData,
-    isPanelVisible: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    placeholder: '',
-    isPanelVisible: false,
-    onChange: () => {},
-  };
-
+class DaSelector extends React.Component {
   constructor(props) {
     super(props)
 
@@ -51,6 +16,11 @@ class DaSelector extends Component {
       selectedOptionData: props.selectedOptionData || props.optionDataList[0],
       isPanelVisible: props.isPanelVisible,
     }
+
+    this.selectOption = this.selectOption.bind(this)
+    this.togglePanel = this.togglePanel.bind(this)
+    this.handlePageEvent = this.handlePageEvent.bind(this)
+    this.handleSearcherEvent = this.handleSearcherEvent.bind(this)
   }
 
   componentDidMount() {
@@ -154,7 +124,7 @@ class DaSelector extends Component {
     this.setState({ isPanelVisible })
   }
 
-  handlePageEvent = event => {
+  handlePageEvent(event) {
     const targetClass = event.target.className
     const needNoResponse = (
       ~targetClass.indexOf('da-selector-option') ||
@@ -173,7 +143,7 @@ class DaSelector extends Component {
     if (this.state.isPanelVisible) this.searcher.focus()
   };
 
-  handleSearcherEvent = event => {
+  handleSearcherEvent(event) {
     const value = event.target.value
     if (typeof value !== 'string') return false
 
@@ -197,4 +167,38 @@ class DaSelector extends Component {
   };
 }
 
-export default DaSelector
+DaSelector.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  optionDataList: PropTypes.arrayOf(OptionData).isRequired,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  selectedOptionData: OptionData,
+  isPanelVisible: PropTypes.bool,
+}
+
+DaSelector.defaultProps = {
+  placeholder: '',
+  isPanelVisible: false,
+  onChange: () => {},
+}
+
+DaSelector.CLS_SET = {
+  main: 'da-selector',
+
+  panel: 'da-selector-panel',
+  list: 'da-selector-option-list',
+  item: 'da-selector-option-item',
+
+  searchWrap: 'da-selector-search-wrap',
+  searchIcon: 'da-selector-search-icon',
+  search: 'da-selector-search',
+
+  placeholder: 'da-selector-placeholder',
+  triangle: 'da-selector-triangle',
+}
+
+window.ReactComponent = Object.assign(ReactComponent, { DaSelector })
+
+
+})(window.ReactComponent || {}, window.React, window.PropTypes, window.classNames)
